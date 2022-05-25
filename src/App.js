@@ -39,13 +39,24 @@ function App() {
     todoNameRef.current.value = null
   }
 
+
+
+  const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
+  const REDIRECT_URI = "http://localhost:3000/"
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
+  const RESPONSE_TYPE = "token"
+
   return (
     <>
-      <TodoList todos={todos} toggleTodo={toggleTodo} />
+
+      <h1>Taste Analyzer</h1>
+        <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
+
+      {/*<TodoList todos={todos} toggleTodo={toggleTodo} />
       <input ref={todoNameRef} type="text" />
       <button onClick={handleAddTodo}>Add Todo</button>
       <button onClick={handleClearTodos}>Clear Completed Todos</button>
-      <div>{todos.filter(todo => !todo.complete).length} left to do</div>
+  <div>{todos.filter(todo => !todo.complete).length} left to do</div>*/}
     </>
   );
 }
