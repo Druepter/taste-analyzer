@@ -1,46 +1,13 @@
-import React, { useState, useRef, useEffect} from "react";
-import TodoList from "./TodoList";
-import { v4 as uuidv4 } from 'uuid'
+import React, { useState, useEffect} from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-const LOCAL_STORAGE_KEY = 'todoApp.todos'
+import Home from "./home";
+
+
 
 function App() {
-  const [todos, setTodos] = useState([])
-  const todoNameRef = useRef()
-
-  /*useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-    if(storedTodos) setTodos(storedTodos)
-  }, [])*/
-
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
-  }, [todos])
-
-
-  function toggleTodo(id){
-    const newTodos = [...todos]
-    const todo = newTodos.find(todo => todo.id === id)
-    todo.complete = !todo.complete
-    setTodos(newTodos)
-  }
-
-  function handleClearTodos() {
-    const newTodos = todos.filter(todo => !todo.complete)
-    setTodos(newTodos)
-  }
-
-  function handleAddTodo(e) {
-    const name = todoNameRef.current.value
-    if (name === '') return
-    setTodos(prevTodos => {
-      return [...prevTodos, { id: uuidv4(), name: name, complete: false}]
-    })
-    todoNameRef.current.value = null
-  }
-
-
+ 
 
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
   const REDIRECT_URI = "http://localhost:3000/"
@@ -49,11 +16,12 @@ function App() {
 
   const [token, setToken] = useState("")
 
+  var scope = 'user-read-private user-read-email user-top-read';
+
+
   useEffect(() => {
     const hash = window.location.hash
     let token = window.localStorage.getItem("token")
-
-   
 
     if(!token && hash){
       token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
@@ -85,32 +53,40 @@ function App() {
 
   }
 
-  var scope = 'user-read-private user-read-email user-top-read';
+  
 
   return (
     <>
+      <Router>
+        <h1>Taste Analyzer</h1>
+        {!token ?
+          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${scope}`}>Login to Spotify</a>
 
-      <h1>Taste Analyzer</h1>
-      {!token ?
-        <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${scope}`}>Login to Spotify</a>
-
-      : <button onClick={logout}>Logout</button>} 
-
-
-       {token ?
-        <button onClick={getFavoriteArtists}>
-          Get Favorite Artists
-        </button>
-        :
-        <p>Bitte einloggen</p>
-       } 
+        : <button onClick={logout}>Logout</button>} 
 
 
-      {/*<TodoList todos={todos} toggleTodo={toggleTodo} />
-      <input ref={todoNameRef} type="text" />
-      <button onClick={handleAddTodo}>Add Todo</button>
-      <button onClick={handleClearTodos}>Clear Completed Todos</button>
-  <div>{todos.filter(todo => !todo.complete).length} left to do</div>*/}
+        {token ?
+          <button onClick={getFavoriteArtists}>
+            Get Favorite Artists
+          </button>
+          :
+          <p>Bitte einloggen</p>
+        } 
+
+        <form action="/til">
+          <button type="submit">
+            Weiter
+          </button>
+        </form>
+
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/til" element={<Home />}></Route>  
+          <Route path="/test" element={<div>hallo</div>}></Route>
+        </Routes> 
+
+
+      </Router>
     </>
   );
 }
