@@ -3,6 +3,9 @@ import axios from "axios";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./home";
+import Login from "./login";
+import LoginTest from "./loginTest.js";
+
 
 
 
@@ -10,7 +13,7 @@ function App() {
  
 
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
-  const REDIRECT_URI = "http://localhost:3000/"
+  const REDIRECT_URI = "http://localhost:3000/test"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
 
@@ -80,7 +83,7 @@ function App() {
         </form>
 
         <Routes>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={<LoginTest _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}/>}></Route>
           <Route path="/til" element={<Home />}></Route>  
           <Route path="/test" element={<div>hallo</div>}></Route>
         </Routes> 
