@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./home";
 import Login from "./login";
+import UserName from "./userName";
 import { render } from "@testing-library/react";
+import DanceableSongs from "./danceableSongs";
 
 
 
@@ -21,6 +23,15 @@ function App() {
   const [favoriteTracks, setFavoriteTracks] = useState([])
   const [currentUsersProfile, setCurrentUsersProfile] = useState([])
 
+  const [isLoading, setIsLoading] = useState(true);
+
+
+
+  const [audioFeatures, setAudioFeatures] = useState([])
+
+
+  var favoriteTracksArray
+  var audioFeaturesArray
 
   var scope = 'user-read-private user-read-email user-top-read';
 
@@ -43,13 +54,6 @@ function App() {
 
   }, [])
 
-  useEffect(() => {
-    console.log("Hallo");
-    
-  })
-
-
-
 
   const logout = () => {
     setToken("")
@@ -57,38 +61,110 @@ function App() {
   }
 
 
-  const getFavoriteTracks = async () => {
-    const {data} = await axios.get("https://api.spotify.com/v1/me/top/tracks/?limit=50&time_range=long_term", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
+  const getFav = () => {
+    console.log(favoriteTracks[0])
+  }
 
-    console.log(data);
+  
+  //In dieser Function werden die Audio Features 50 beliebesten Tracks des aktuellen Nutzers der Spotify API geladen
+  const getFavoriteTracksAudioFeatures = async () => {
 
-    setFavoriteTracks(data.items)
+    //Token für die Authentifikation aus dem Local Storage holen
+    var localStorageToken = window.localStorage.getItem('token')
     
+    //Anfrage an die Api stellen
+    //Hier werden die 50 beliebtesten Track geholt
+    //ToDo: Alle drei Listen holen (short_term, medium_term, long_term) und dann konkatinieren
+    await fetch('https://api.spotify.com/v1/me/top/tracks/?limit=50&time_range=medium_term', {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': `Bearer ${localStorageToken}`
+      })
+    }).then(response => response.json())
+    .then(data => {
+      //Wenn die Tracks da sind, setze State und hole Audio Features
+      setFavoriteTracks(data.items)
+      //Auf den State zugreifen, klappte nicht(Warum nicht? Experten fragen)
+      //Deshalb hier ein zwischen Array
+      favoriteTracksArray = data.items
+      //Hole Audio Features
+      getAudioFeaturesFromFavoriteTracks()
+
+    });    
   }
 
-  //todo
-  //String aus allen Ids der Favorite Tracks zusammenbauen
+  //Hole Audio Features der 50 belietesten Tracks
+  const getAudioFeaturesFromFavoriteTracks = async () => {
 
+    var parameters = '' 
 
-  //const params = new URLSearchParams([['ids', '7ouMYWpwJ422jRcDASZB7P', '4VqPOruhp5EdPBeR92t6lQ']])
-  const parameter = '7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ'
+    //Baue String aus IDs für die Paramter zusammen
+    for(var i = 0; i < favoriteTracksArray.length; i++){
+      parameters = parameters + favoriteTracksArray[i].id
+      if(favoriteTracksArray[i + 1] != undefined){
+        parameters = parameters + ","
+      }
+    }
 
-  const getAudioFeatures = async () => {
-    const {data} = await axios.get("https://api.spotify.com/v1/audio-features/", {
-      params: {
-        ids: parameter
-      },
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
+    //Token aus lokal storage holen
+    var localStorageToken = window.localStorage.getItem('token')
 
-    console.log(data);
+    await fetch("https://api.spotify.com/v1/audio-features/?ids=" + parameters, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': `Bearer ${localStorageToken}`
+      })
+    }).then(response => response.json())
+    .then(data => {
+      //Setze State Audio Features und isLoading auf false
+      setAudioFeatures(data.audio_features)
+      setIsLoading(false)
+      audioFeaturesArray = data.audio_features
+
+      console.log(audioFeaturesArray)
+      console.log(favoriteTracksArray)
+    });
+
   }
+
+  const danceableTracks = []
+
+  const getDanceableTracks = () => {
+
+    //Iteriere über Audio Features Array
+    //Wenn danceibilty über 70% ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
+
+    for(var i=0; i < audioFeatures.length; i++){
+
+      var trackName = ""
+
+      if(audioFeatures[i].valence > 0.7){
+        for(var j=0; j < favoriteTracks.length; j++){
+          if(audioFeatures[i].id == favoriteTracks[j].id){
+            trackName = favoriteTracks[j].name
+          }
+        }
+      const idAndName = []
+      idAndName.push(audioFeatures[i].id)
+      idAndName.push(trackName)
+        
+
+      danceableTracks.push(idAndName)
+      }
+
+      
+    }
+    console.log(danceableTracks)
+
+  }
+
+
+ 
+
+
+
+
 
 
 
@@ -103,47 +179,15 @@ function App() {
   }
 
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    
-
-    await fetch('https://api.spotify.com/v1/me', {
-      method: 'get',
-      headers: new Headers({
-        'Authorization': `Bearer ${token}`
-      })
-    }).then(response => response.json())
-    .then(data => {
-      setIsLoading(false)
-      console.log(data)
-    });
-
-    /*const {data} = await axios.get("https://api.spotify.com/v1/me", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-
-    console.log(data)
-
-    data.then(
-      function(value) {
-          setIsLoading(false)
-          console.log(data)
-      },
-      function(error) {
-          
-      }
-    );*/
 
 
 
-  }
-
+  
 
   const getCurrentUsersProfile = async () => {
+
+    console.log(token)
+
     const {data} = await axios.get("https://api.spotify.com/v1/me", {
       headers: {
         Authorization: `Bearer ${token}`
@@ -177,7 +221,7 @@ function App() {
   //Diese nimmt Tracks von Spotify Api entgegen und gibt diese aus
   //Oder nimmt Liste entgegen
   //Sont kümmert die sich nur um die darstellung und wird in andere Komponenten eingebunden
-  const renderFavoriteTracks = () => {
+  /*const renderFavoriteTracks = () => {
     console.log("Render Favorite Tracks")
     return( 
       
@@ -191,7 +235,7 @@ function App() {
       </>
       
     )
-  }
+  }*/
 
   return (
     <>
@@ -205,13 +249,11 @@ function App() {
 
         {token ?
           <>
-            <button onClick={getFavoriteTracks}>
+            <button onClick={getFavoriteTracksAudioFeatures}>
               Get Favorite Tracks
             </button>
             <br></br>
-            <button onClick={getAudioFeatures}>
-              Get Audio Features
-            </button>
+        
             <br></br>
             <button onClick={getCurrentUsersProfile}>
               Get User Profile 
@@ -221,20 +263,37 @@ function App() {
             </button>
             <br></br>
             <br></br>
+            <button onClick={getDanceableTracks}>
+              Get Danceable Tracks
+            </button>
             <br></br>
-            <button onClick={fetchData}>
+            <button >
               Fetch Data
             </button>
             <br></br>
+            <div>Hier sind die audioFeatures: {audioFeatures.danceability}</div>
             {isLoading ?
-              <div>wird geladen</div>
-
+              <div>Wird geladen</div>
             :
-              <div>ist geladen</div>  
+              <>
+                <div>{favoriteTracks[0].name}</div>
+                <div>{audioFeatures[0].energy}</div>
+              </> 
             }
+            
+            <button onClick={getFav}>
+              Get Data 
+            </button>
+            <button onClick={getAudioFeaturesFromFavoriteTracks}>
+              Baue String zusammen
+            </button>
             <br></br>
+            <DanceableSongs danceability={audioFeatures.danceability}></DanceableSongs>
             <br></br>
-            {renderFavoriteTracks()}
+            <UserName></UserName>
+
+          
+
            
           </>
           
@@ -246,12 +305,12 @@ function App() {
 
 
         <Routes>
-          <Route path="/home" element={<Home getCurrentUsersProfile={getData}/>}></Route>
+          <Route path="/home" element={<Home getFavoriteTracks={getFavoriteTracksAudioFeatures} getAudioFeatures={getAudioFeaturesFromFavoriteTracks}/>}></Route>
           <Route path="/home2" element={<Home getCurrentUsersProfile={getCurrentUsersProfile}/>}></Route>    
 
 
           <Route path="/til" element={<Home currentUsersProfile/>}></Route>  
-          <Route path="/test" element={<div>hallo {renderFavoriteTracks()}</div>}></Route>
+    
           <Route path="/zweiteSeite" element={<div>Dein Musikgeschmack ist sehr
             vielfältig. Auf den folgenden Slides haben wir dieses geneuer
             analysiert und geguckt was für ein Musiktyp du bist!
