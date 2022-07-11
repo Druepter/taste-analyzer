@@ -8,6 +8,7 @@ module.exports = {
       colors: {
         'spotifyColor': '#1DB954',
         'spotifyColorHover': '#1ED760',
+        'hsdColor': '#E60028', 
       }
     },
   },

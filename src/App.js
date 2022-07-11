@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./home";
 import Login from "./login";
-import LoginTest from "./loginTest.js";
+import { render } from "@testing-library/react";
 
 
 
@@ -18,8 +18,13 @@ function App() {
   const RESPONSE_TYPE = "token"
 
   const [token, setToken] = useState("")
+  const [favoriteTracks, setFavoriteTracks] = useState([])
+  const [currentUsersProfile, setCurrentUsersProfile] = useState([])
+
 
   var scope = 'user-read-private user-read-email user-top-read';
+
+
 
 
   useEffect(() => {
@@ -38,6 +43,13 @@ function App() {
 
   }, [])
 
+  useEffect(() => {
+    console.log("Hallo");
+    
+  })
+
+
+
 
   const logout = () => {
     setToken("")
@@ -45,8 +57,8 @@ function App() {
   }
 
 
-  const getFavoriteArtists = async () => {
-    const {data} = await axios.get("https://api.spotify.com/v1/me/top/artists", {
+  const getFavoriteTracks = async () => {
+    const {data} = await axios.get("https://api.spotify.com/v1/me/top/tracks/?limit=50&time_range=long_term", {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -54,38 +66,202 @@ function App() {
 
     console.log(data);
 
+    setFavoriteTracks(data.items)
+    
   }
 
-  
+  //todo
+  //String aus allen Ids der Favorite Tracks zusammenbauen
+
+
+  //const params = new URLSearchParams([['ids', '7ouMYWpwJ422jRcDASZB7P', '4VqPOruhp5EdPBeR92t6lQ']])
+  const parameter = '7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ'
+
+  const getAudioFeatures = async () => {
+    const {data} = await axios.get("https://api.spotify.com/v1/audio-features/", {
+      params: {
+        ids: parameter
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+
+    console.log(data);
+  }
+
+
+
+  async function getData() {
+    const {data} = await axios.get("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+    console.log(data)
+    return data
+  }
+
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    
+
+    await fetch('https://api.spotify.com/v1/me', {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': `Bearer ${token}`
+      })
+    }).then(response => response.json())
+    .then(data => {
+      setIsLoading(false)
+      console.log(data)
+    });
+
+    /*const {data} = await axios.get("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+
+    console.log(data)
+
+    data.then(
+      function(value) {
+          setIsLoading(false)
+          console.log(data)
+      },
+      function(error) {
+          
+      }
+    );*/
+
+
+
+  }
+
+
+  const getCurrentUsersProfile = async () => {
+    const {data} = await axios.get("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+    console.log(data);
+    return data
+    //setCurrentUsersProfile(data)
+  }
+
+  const getCurrentUsersName = () => {
+    console.log("Hole dir die Daten des Nutzers");
+    getCurrentUsersProfile()
+    console.log("Hier wird die Funktion getCurrentUsersName aufgerufen");
+  }
+
+
+  const renderCurrentUsersName = () => {
+    if(!currentUsersProfile)
+      getCurrentUsersProfile()  
+      
+    return(
+      <>
+        <div>{currentUsersProfile.name}</div>
+      </>
+    )
+  }
+
+
+  //Eigene Komponete Favorite Tracks
+  //Diese nimmt Tracks von Spotify Api entgegen und gibt diese aus
+  //Oder nimmt Liste entgegen
+  //Sont kümmert die sich nur um die darstellung und wird in andere Komponenten eingebunden
+  const renderFavoriteTracks = () => {
+    console.log("Render Favorite Tracks")
+    return( 
+      
+      <>
+
+        {favoriteTracks.map((track) => (
+          <>
+          <div>{track.name}</div>
+          </>
+        ))}
+      </>
+      
+    )
+  }
 
   return (
     <>
       <Router>
-        <h1>Taste Analyzer</h1>
         {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${scope}`}>Login to Spotify</a>
+          <Login _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}></Login>
+         
 
         : <button onClick={logout}>Logout</button>} 
 
 
         {token ?
-          <button onClick={getFavoriteArtists}>
-            Get Favorite Artists
-          </button>
+          <>
+            <button onClick={getFavoriteTracks}>
+              Get Favorite Tracks
+            </button>
+            <br></br>
+            <button onClick={getAudioFeatures}>
+              Get Audio Features
+            </button>
+            <br></br>
+            <button onClick={getCurrentUsersProfile}>
+              Get User Profile 
+            </button>
+            <button onClick={getData}>
+              Get Data 
+            </button>
+            <br></br>
+            <br></br>
+            <br></br>
+            <button onClick={fetchData}>
+              Fetch Data
+            </button>
+            <br></br>
+            {isLoading ?
+              <div>wird geladen</div>
+
+            :
+              <div>ist geladen</div>  
+            }
+            <br></br>
+            <br></br>
+            {renderFavoriteTracks()}
+           
+          </>
+          
+
           :
-          <p>Bitte einloggen</p>
+          <p></p>
         } 
 
-        <form action="/til">
-          <button type="submit">
-            Weiter
-          </button>
-        </form>
+
 
         <Routes>
-          <Route path="/" element={<LoginTest _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}/>}></Route>
-          <Route path="/til" element={<Home />}></Route>  
-          <Route path="/test" element={<div>hallo</div>}></Route>
+          <Route path="/home" element={<Home getCurrentUsersProfile={getData}/>}></Route>
+          <Route path="/home2" element={<Home getCurrentUsersProfile={getCurrentUsersProfile}/>}></Route>    
+
+
+          <Route path="/til" element={<Home currentUsersProfile/>}></Route>  
+          <Route path="/test" element={<div>hallo {renderFavoriteTracks()}</div>}></Route>
+          <Route path="/zweiteSeite" element={<div>Dein Musikgeschmack ist sehr
+            vielfältig. Auf den folgenden Slides haben wir dieses geneuer
+            analysiert und geguckt was für ein Musiktyp du bist!
+          </div>}></Route>
+
+          <Route path="/zweiteSeiteAlternativ" element={<div>Du hast einen sehr
+            Eindeutigen Musikgeschmack mit eindeutigen Präferenzen. Auf den
+            nächsten Slides sind diese genauer beleuchtet.
+
+          </div>}></Route>
         </Routes> 
 
 

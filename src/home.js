@@ -1,15 +1,108 @@
-import React from "react";
+import { root } from "postcss";
+import React, {useEffect, useState} from "react";
 
-export default function Home(){
+
+
+
+
+export default function Home({getCurrentUsersProfile, currentUsersProfile}){
+
+
+    //Wenn Daten noch nicht da sind zeige andere Seite
+    //Wenn Daten da sind dann Lade richtige Seite
+    //Speichere Daten in Liste
+
+    const [reloadState, setReloadState] = useState("")
+    
+
+
+    var status = "geladen";
+    var data;
+
+
+    const [isLoading, setIsLoading] = useState();
+    const [myData, setMyData] = useState();
+
+
+    useEffect(() => {
+        //Bei Pageload einmal
+        //Hole alle Daten
+
+        setIsLoading(true);
+
+        data = getCurrentUsersProfile()
+
+
+        data.then(
+            function(value) {
+                setIsLoading(false)
+                setMyData(data)
+            },
+            function(error) {
+                
+            }
+        );
+
+  
+
+        /*if(!data){
+            data = getCurrentUsersProfile()
+
+            data.then(
+                function(value) {
+                    console.log(value) 
+                    status="geladen"
+                    setReloadState("huhu");
+                    
+                },
+                //Wenn value zeige die originale Seite
+                //Wenn error dann zeige die ersatz Seite
+                function(error) {
+                    console.log(error)
+                    status="error"
+                }
+            );
+
+
+        }*/
+
+    })
+
+
+
+    //if Daten geladen return ..
+
+
+
+    //Sonst return was anders
+
+    if(status == "geladen"){
+        return (
+            <>
+                <div>Daten sind geladen</div>
+                <div>{data}</div>
+            </>
+        )
+    }
+    else{
+        return (
+            <>
+                <div>Daten werden geladen</div>
+            </>
+        )
+    }
+
     return (
-        <div>
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
-            <h2 class="text-base text-indigo-600 font-semibold tracking-wide uppercase">Transactions</h2>
-            <MeinButton>
 
-            </MeinButton>
+        //Hier einbauen Variale 
+    
+
+        <div>
+            Hallo, hier Name der Person
+            <br></br>
+            <button>Weiter zur nächten Seite</button>
+
+            
         </div>
 
     )
