@@ -9,6 +9,7 @@ import { render } from "@testing-library/react";
 import DanceableSongs from "./danceableSongs";
 import Danceable from "./danceable";
 import {Helmet} from "react-helmet";
+import LowValence from "./LowValence";
 
 
 
@@ -363,11 +364,12 @@ function App() {
             trackName = allFavoriteTracks[j].name
           }
         }
-      const idAndName = []
-      idAndName.push(allAudioFeatures[i].id)
-      idAndName.push(trackName)
-    
-      danceableTracksArray.push(idAndName)
+      const trackInformation = []
+      trackInformation.push(allAudioFeatures[i].id)
+      trackInformation.push(trackName)
+      trackInformation.push(allFavoriteTracks[i].artists)  
+
+      danceableTracksArray.push(trackInformation)
       }
       
     }
@@ -392,11 +394,12 @@ function App() {
             trackName = allFavoriteTracks[j].name
           }
         }
-      const idAndName = []
-      idAndName.push(allAudioFeatures[i].id)
-      idAndName.push(trackName)
+      const trackInformation = []
+      trackInformation.push(allAudioFeatures[i].id)
+      trackInformation.push(trackName)
+      trackInformation.push(allFavoriteTracks[i].artists)
     
-      tracksWithLowValenceArray.push(idAndName)
+      tracksWithLowValenceArray.push(trackInformation)
       }
       
     }
@@ -435,38 +438,6 @@ function App() {
 
 
 
-
-  async function getData() {
-    const {data} = await axios.get("https://api.spotify.com/v1/me", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-    console.log(data)
-    return data
-  }
-
-
-
-
-
-  
-
-  const getCurrentUsersProfile = async () => {
-
-    console.log(token)
-
-    const {data} = await axios.get("https://api.spotify.com/v1/me", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-    console.log(data);
-    return data
-    //setCurrentUsersProfile(data)
-  }
-
-
   return (
     <>
       <Router>
@@ -501,10 +472,9 @@ function App() {
 
 
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} concatFavoriteTracks={handleHomeOnClick} token={token}/>}></Route>
-            
-          <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} token={token}/>}></Route> 
-
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} concatFavoriteTracks={handleHomeOnClick} token={token}/>}></Route>   
+          <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks}/>}></Route> 
+          <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence}/>}></Route> 
           
         </Routes> 
 

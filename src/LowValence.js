@@ -1,22 +1,17 @@
 import React, { useState, useEffect} from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import TrackList from "./trackList";
 
 
-export default function LowValence({danceableTracks, token}){
-
-    
-
-    useEffect(() =>{
-        console.log(danceableTracks)
-        console.log(token)
-    }, [])
-
-
-
+export default function LowValence({tracksWithLowValence}){
 
     return (
         <>
-          <div>Zu einem Teil deiner Lieblingssongs lässt sich sehr gut tanzen.</div>
+          <div>Auch traurige Musik darf in deinem Katalog nicht fehlen.</div>
+          <br></br>
           <div>Diese Songs sind hier zu sehen:</div>
+          <br></br>
+          <TrackList tracks={tracksWithLowValence}></TrackList>
+          <br></br>
+
         </>
     )}
