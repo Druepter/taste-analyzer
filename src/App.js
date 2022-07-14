@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useRef} from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import Login from "./login";
 import UserName from "./userName";
 import { render } from "@testing-library/react";
 import DanceableSongs from "./danceableSongs";
+import Danceable from "./danceable";
 
 
 
@@ -15,7 +16,7 @@ function App() {
  
 
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
-  const REDIRECT_URI = "http://localhost:3000/test"
+  const REDIRECT_URI = "http://localhost:3000/home"
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
 
@@ -38,9 +39,8 @@ function App() {
   const [isLoadingMediumTerm, setIsLoadingMediumTerm] = useState(true);
   const [isLoadingLongTerm, setIsLoadingLongTerm] = useState(true);
 
-
-
-  
+  const [danceableTracks, setDanceableTracks] = useState();
+  const danceableTracksArray = []
 
 
   var favoriteTracksArrayShortTerm
@@ -51,6 +51,11 @@ function App() {
   var scope = 'user-read-private user-read-email user-top-read';
 
 
+
+  useEffect(() => {
+    console.log("danceableTracks wurde geändert")
+    console.log(danceableTracks)
+  }, [danceableTracks])
 
 
   useEffect(() => {
@@ -66,17 +71,33 @@ function App() {
     }
 
     setToken(token)
+    console.log(token)
 
   }, [])
+
+  useEffect(() => {
+    console.log(token)
+
+  }, [token])
 
 
 
   useEffect(() => {
-    console.log("Short Term geladen");
-    console.log(favoriteTracksArrayShortTerm)
-    console.log(favoriteTracksShortTerm)
+    //Wenn alle drei Favorite Tracks Kategorien geladen sind, dann konkatiniere sie
+    if(isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false){
+      concatFavoriteTracks()
+    }
+  }, [isLoadingShortTerm, isLoadingMediumTerm, isLoadingLongTerm])
 
-  }, [isLoadingShortTerm])
+  useEffect(() => {
+    //Wenn Alle Favorite Songs fertig zusammengebaut sind dann führe das hier aus
+    //Hier alle Methoden die gebraucht werden aufrufen
+    //Accoustic Songs
+    //Danceable Songs
+    //...
+    console.log("Alle Lieblingslieder fertig")
+    getDanceableTracks()
+  }, [allFavoriteTracks])
 
 
 
@@ -122,8 +143,6 @@ function App() {
   const getAudioFeaturesFromFavoriteTracksShortTerm = async () => {
 
     var parameters = '' 
-
-    console.log(favoriteTracksArrayShortTerm)
 
     //Baue String aus IDs für die Paramter zusammen
     for(var i = 0; i < favoriteTracksArrayShortTerm.length; i++){
@@ -276,25 +295,21 @@ function App() {
 
   const concatFavoriteTracks = () => {
 
+    //ToDo: alle drei Arrays vereinen
 
-    console.log(favoriteTracksLongTerm)
-
-    var allFavoriteTracks = favoriteTracksShortTerm.concat(favoriteTracksMediumTerm)
+    var allFavoriteTracksArray = favoriteTracksShortTerm.concat(favoriteTracksMediumTerm)
     //var allFavoriteTracksNew = allFavoriteTracks.concat(favoriteTracksArrayLongTerm)
     //console.log(allFavoriteTracks)
     //console.log(allFavoriteTracksNew)
-    var allFavoriteTracksWithoutDuplicates = removeDuplicates(allFavoriteTracks)
+    var allFavoriteTracksWithoutDuplicates = removeDuplicates(allFavoriteTracksArray)
     console.log(allFavoriteTracksWithoutDuplicates)
     setAllFavoriteTracks(allFavoriteTracksWithoutDuplicates)
-
+    
     var allFavoriteTracksAudioFeatures = audioFeaturesShortTerm.concat(audioFeaturesMediumTerm)
     //allFavoriteTracksAudioFeatures = allFavoriteTracksAudioFeatures.concat(audioFeaturesLongTerm)
     var allFavoriteTracksAudioFeaturesWithoutDuplicates = removeDuplicates(allFavoriteTracksAudioFeatures)
     console.log(allFavoriteTracksAudioFeaturesWithoutDuplicates)
     setAllAudioFeatures(allFavoriteTracksAudioFeaturesWithoutDuplicates)
-
-
-
   }
 
   function removeDuplicates(inArray){
@@ -315,36 +330,21 @@ function App() {
 
   const handleHomeOnClick = () => {
 
+    window.location = "dancealbe"
+
+
     concatFavoriteTracks()
-    //getDanceableTracks()
+    getDanceableTracks()
 
   }
 
-
-
-  const logAudioFeatures = () => {
-    concatFavoriteTracks()
-    console.log(audioFeaturesShortTerm)
-    console.log(audioFeaturesMediumTerm)
-  }
-
-
-
-
-
-
-
-
-
-  const danceableTracks = []
+  
 
   const getDanceableTracks = () => {
 
     //Iteriere über Audio Features Array
     //Wenn danceibilty über 70% ist in neue Liste schreiben
     //Hole dir Songnamen anhand von id aus favertie Tracks Array
-  
-
 
     for(var i=0; i < allAudioFeatures.length; i++){
 
@@ -361,12 +361,17 @@ function App() {
       idAndName.push(trackName)
         
 
-      danceableTracks.push(idAndName)
+      danceableTracksArray.push(idAndName)
       }
 
       
     }
-    console.log(danceableTracks)
+
+
+    console.log(danceableTracksArray)
+    setDanceableTracks(danceableTracksArray)
+ 
+    
 
   }
 
@@ -409,87 +414,30 @@ function App() {
     //setCurrentUsersProfile(data)
   }
 
-  const getCurrentUsersName = () => {
-    console.log("Hole dir die Daten des Nutzers");
-    getCurrentUsersProfile()
-    console.log("Hier wird die Funktion getCurrentUsersName aufgerufen");
-  }
+ 
 
 
-  const renderCurrentUsersName = () => {
-    if(!currentUsersProfile)
-      getCurrentUsersProfile()  
-      
-    return(
-      <>
-        <div>{currentUsersProfile.name}</div>
-      </>
-    )
-  }
 
 
-  //Eigene Komponete Favorite Tracks
-  //Diese nimmt Tracks von Spotify Api entgegen und gibt diese aus
-  //Oder nimmt Liste entgegen
-  //Sont kümmert die sich nur um die darstellung und wird in andere Komponenten eingebunden
-  /*const renderFavoriteTracks = () => {
-    console.log("Render Favorite Tracks")
-    return( 
-      
-      <>
 
-        {favoriteTracks.map((track) => (
-          <>
-          <div>{track.name}</div>
-          </>
-        ))}
-      </>
-      
-    )
-  }*/
 
   return (
     <>
       <Router>
         {!token ?
           <Login _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}></Login>
-         
+          
 
         : <button onClick={logout}>Logout</button>} 
 
 
         {token ?
           <>
-            <button onClick={getFavoriteTracksAudioFeaturesShortTerm}>
-              Get Favorite Tracks
-            </button>
-            <br></br>
-        
-            <br></br>
-            <button onClick={getCurrentUsersProfile}>
-              Get User Profile 
-            </button>
-            <button onClick={getData}>
-              Get Data 
-            </button>
-            <br></br>
-            <br></br>
-            <button onClick={getDanceableTracks}>
-              Get Danceable Tracks
-            </button>
-            <br></br>
-            <button >
-              Fetch Data
-            </button>
-            <br></br>
-            <div>Hier sind die audioFeatures: {audioFeaturesShortTerm.danceability}</div>
-
-          
 
             {isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false ?
               <>
-                <div>{favoriteTracksShortTerm[0].name}</div>
-                <div>{audioFeaturesShortTerm[0].energy}</div>
+                {/*<div>{favoriteTracksShortTerm[0].name}</div>
+                <div>{audioFeaturesShortTerm[0].energy}</div>*/}
               </>
             :
               <>
@@ -497,20 +445,6 @@ function App() {
               </> 
             }
             
-            <button onClick={logAudioFeatures}>
-              Get Data 
-            </button>
-            <button onClick={getAudioFeaturesFromFavoriteTracksShortTerm}>
-              Baue String zusammen
-            </button>
-            <br></br>
-            <DanceableSongs danceability={audioFeaturesShortTerm.danceability}></DanceableSongs>
-            <br></br>
-            <UserName></UserName>
-
-          
-
-           
           </>
           
 
@@ -521,22 +455,11 @@ function App() {
 
 
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} concatFavoriteTracks={handleHomeOnClick}/>}></Route>
-          <Route path="/home2" element={<Home getCurrentUsersProfile={getCurrentUsersProfile}/>}></Route>    
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} concatFavoriteTracks={handleHomeOnClick} token={token}/>}></Route>
+            
+          <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} token={token}/>}></Route> 
 
-
-          <Route path="/til" element={<Home currentUsersProfile/>}></Route>  
-    
-          <Route path="/zweiteSeite" element={<div>Dein Musikgeschmack ist sehr
-            vielfältig. Auf den folgenden Slides haben wir dieses geneuer
-            analysiert und geguckt was für ein Musiktyp du bist!
-          </div>}></Route>
-
-          <Route path="/zweiteSeiteAlternativ" element={<div>Du hast einen sehr
-            Eindeutigen Musikgeschmack mit eindeutigen Präferenzen. Auf den
-            nächsten Slides sind diese genauer beleuchtet.
-
-          </div>}></Route>
+          
         </Routes> 
 
 
