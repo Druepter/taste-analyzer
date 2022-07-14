@@ -46,6 +46,15 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
             Wir können nun mit der Analyse deines Musikgeschmacks beginnen!<br></br>
             Klicke dazu auf den Button weiter!
             <br></br>
+            <br></br>
+            Wie werden deine Lieblingstrack nach Stimmung Kategorisieren.<br></br>
+            Welche sind deine traurigsten Lieblinssongs?<br></br>
+            Welche deine deine tanzbarsten und fröhlichsten?<br></br>
+            Alle Songs einer Kategorie werden anschließend in jeweiligen Playlisten
+            zusammengefügt. Dieses Feature lässt sich ein und auschalten<br></br>
+            Im letzten Schritt wird dein ganzer Katalog zusammengefasst und eine Auswertung auf
+            dem Diagramm gezeigt wo man sich befindet. Nur vielleicht
+            <br></br><br></br>
             {/* Eigentlich muss dies hier zu einer Seite führen, welche verschiedene Routen zu 
             verschiedenen Anwendungsfällen besitzt */}
             <Link to="/danceable">Weiter zur Auswertung</Link>

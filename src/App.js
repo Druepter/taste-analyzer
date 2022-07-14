@@ -8,7 +8,7 @@ import UserName from "./userName";
 import { render } from "@testing-library/react";
 import DanceableSongs from "./danceableSongs";
 import Danceable from "./danceable";
-
+import {Helmet} from "react-helmet";
 
 
 
@@ -42,6 +42,11 @@ function App() {
   const [danceableTracks, setDanceableTracks] = useState();
   const danceableTracksArray = []
 
+  const [tracksWithLowValence, setTracksWithLowValence] = useState();
+  const tracksWithLowValenceArray = []
+
+  const [tracksWithHighValence, setTracksWithHighValence] = useState();
+  const tracksWithHighValenceArray = []
 
   var favoriteTracksArrayShortTerm
   var favoriteTracksArrayMediumTerm
@@ -97,6 +102,8 @@ function App() {
     //...
     console.log("Alle Lieblingslieder fertig")
     getDanceableTracks()
+    getTracksWithLowValence()
+    getTracksWithHighValence()
   }, [allFavoriteTracks])
 
 
@@ -359,25 +366,70 @@ function App() {
       const idAndName = []
       idAndName.push(allAudioFeatures[i].id)
       idAndName.push(trackName)
-        
-
+    
       danceableTracksArray.push(idAndName)
       }
-
       
     }
-
-
     console.log(danceableTracksArray)
     setDanceableTracks(danceableTracksArray)
- 
-    
-
   }
 
 
- 
 
+  const getTracksWithLowValence = () => {
+    //Iteriere über Audio Features Array
+    //Wenn Valence unter 0.3 ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
+
+    for(var i=0; i < allAudioFeatures.length; i++){
+
+      var trackName = ""
+
+      if(allAudioFeatures[i].valence < 0.25){
+        for(var j=0; j < allFavoriteTracks.length; j++){
+          if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
+            trackName = allFavoriteTracks[j].name
+          }
+        }
+      const idAndName = []
+      idAndName.push(allAudioFeatures[i].id)
+      idAndName.push(trackName)
+    
+      tracksWithLowValenceArray.push(idAndName)
+      }
+      
+    }
+    console.log(tracksWithLowValenceArray)
+    setTracksWithLowValence(tracksWithLowValenceArray)
+  }
+ 
+  const getTracksWithHighValence = () => {
+    //Iteriere über Audio Features Array
+    //Wenn Valence unter 0.3 ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
+
+    for(var i=0; i < allAudioFeatures.length; i++){
+
+      var trackName = ""
+
+      if(allAudioFeatures[i].valence > 0.7){
+        for(var j=0; j < allFavoriteTracks.length; j++){
+          if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
+            trackName = allFavoriteTracks[j].name
+          }
+        }
+      const idAndName = []
+      idAndName.push(allAudioFeatures[i].id)
+      idAndName.push(trackName)
+    
+      tracksWithHighValenceArray.push(idAndName)
+      }
+      
+    }
+    console.log(tracksWithHighValenceArray)
+    setTracksWithHighValence(tracksWithHighValenceArray)
+  }
 
 
 
@@ -413,12 +465,6 @@ function App() {
     return data
     //setCurrentUsersProfile(data)
   }
-
- 
-
-
-
-
 
 
   return (
@@ -464,6 +510,11 @@ function App() {
 
 
       </Router>
+
+      <Helmet>
+          <title>Spotify Taste Analyzer</title>
+          
+    </Helmet>
     </>
   );
 }
