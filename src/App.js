@@ -36,17 +36,19 @@ function App() {
 
   const [currentUsersProfile, setCurrentUsersProfile] = useState([])
 
-  const [isLoadingShortTerm, setIsLoadingShortTerm] = useState(true);
-  const [isLoadingMediumTerm, setIsLoadingMediumTerm] = useState(true);
-  const [isLoadingLongTerm, setIsLoadingLongTerm] = useState(true);
+  const [isLoadingShortTerm, setIsLoadingShortTerm] = useState(true)
+  const [isLoadingMediumTerm, setIsLoadingMediumTerm] = useState(true)
+  const [isLoadingLongTerm, setIsLoadingLongTerm] = useState(true)
+  const [isLoadingCurrentUsersProfile, setIsLoadingCurrentUsersProfile] = useState(true)
+  const [isLoadingAll, setIsLoadingAll] = useState(true)
 
   const [danceableTracks, setDanceableTracks] = useState();
   const danceableTracksArray = []
 
-  const [tracksWithLowValence, setTracksWithLowValence] = useState();
+  const [tracksWithLowValence, setTracksWithLowValence] = useState()
   const tracksWithLowValenceArray = []
 
-  const [tracksWithHighValence, setTracksWithHighValence] = useState();
+  const [tracksWithHighValence, setTracksWithHighValence] = useState()
   const tracksWithHighValenceArray = []
 
   var favoriteTracksArrayShortTerm
@@ -54,14 +56,8 @@ function App() {
   var favoriteTracksArrayLongTerm
   var audioFeaturesArray
 
-  var scope = 'user-read-private user-read-email user-top-read';
+  var scope = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private';
 
-
-
-  useEffect(() => {
-    console.log("danceableTracks wurde geändert")
-    console.log(danceableTracks)
-  }, [danceableTracks])
 
 
   useEffect(() => {
@@ -77,23 +73,22 @@ function App() {
     }
 
     setToken(token)
-    console.log(token)
+
+    console.log("Use Effekt ohne Parameter wird ausgeführt")
 
   }, [])
 
-  useEffect(() => {
-    console.log(token)
 
-  }, [token])
 
 
 
   useEffect(() => {
     //Wenn alle drei Favorite Tracks Kategorien geladen sind, dann konkatiniere sie
-    if(isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false){
+    if(isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false && isLoadingCurrentUsersProfile == false){
+      setIsLoadingAll(false)
       concatFavoriteTracks()
     }
-  }, [isLoadingShortTerm, isLoadingMediumTerm, isLoadingLongTerm])
+  }, [isLoadingShortTerm, isLoadingMediumTerm, isLoadingLongTerm, isLoadingCurrentUsersProfile])
 
   useEffect(() => {
     //Wenn Alle Favorite Songs fertig zusammengebaut sind dann führe das hier aus
@@ -101,12 +96,23 @@ function App() {
     //Accoustic Songs
     //Danceable Songs
     //...
-    console.log("Alle Lieblingslieder fertig")
-    getDanceableTracks()
-    getTracksWithLowValence()
-    getTracksWithHighValence()
+    if(isLoadingAll == false){
+      console.log("allFavoriteTracks haben sich geändert")
+      getDanceableTracks()
+      getTracksWithLowValence()
+      getTracksWithHighValence()
+    }
+
   }, [allFavoriteTracks])
 
+
+  useEffect(() => {
+    //Wenn alle Songs geladen sind und danceable Tracks fertig sind erstelle die Playliste dazu
+    if(isLoadingAll == false){
+      createPlaylist("Tanzbare Songs", danceableTracks)
+    }
+
+  }, [danceableTracks])
 
 
   const logout = () => {
@@ -114,11 +120,20 @@ function App() {
     window.localStorage.removeItem("token");
   }
 
+  //Hole die Profildetails des aktuell eingeloggten Nutzers
+  const getCurrentUsersProfile = async () => {
 
-  const getFav = () => {
-    console.log(favoriteTracksShortTerm[0])
+    await fetch('https://api.spotify.com/v1/me', {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': `Bearer ${token}`
+      })
+    }).then(response => response.json())
+    .then(data => {
+        setCurrentUsersProfile(data)
+        setIsLoadingCurrentUsersProfile(false)
+    });    
   }
-
   
   //In dieser Function werden die Audio Features 50 beliebesten Tracks des aktuellen Nutzers der Spotify API geladen
   const getFavoriteTracksAudioFeaturesShortTerm = async () => {
@@ -302,21 +317,19 @@ function App() {
 
 
   const concatFavoriteTracks = () => {
-
     //ToDo: alle drei Arrays vereinen
 
-    var allFavoriteTracksArray = favoriteTracksShortTerm.concat(favoriteTracksMediumTerm)
+    var allFavoriteTracksArray = favoriteTracksShortTerm.concat(favoriteTracksMediumTerm, favoriteTracksLongTerm)
     //var allFavoriteTracksNew = allFavoriteTracks.concat(favoriteTracksArrayLongTerm)
     //console.log(allFavoriteTracks)
     //console.log(allFavoriteTracksNew)
     var allFavoriteTracksWithoutDuplicates = removeDuplicates(allFavoriteTracksArray)
-    console.log(allFavoriteTracksWithoutDuplicates)
+    //State, welcher alle Favorite Tracks speichert wird gesetzt
     setAllFavoriteTracks(allFavoriteTracksWithoutDuplicates)
     
-    var allFavoriteTracksAudioFeatures = audioFeaturesShortTerm.concat(audioFeaturesMediumTerm)
+    var allFavoriteTracksAudioFeatures = audioFeaturesShortTerm.concat(audioFeaturesMediumTerm, audioFeaturesLongTerm)
     //allFavoriteTracksAudioFeatures = allFavoriteTracksAudioFeatures.concat(audioFeaturesLongTerm)
     var allFavoriteTracksAudioFeaturesWithoutDuplicates = removeDuplicates(allFavoriteTracksAudioFeatures)
-    console.log(allFavoriteTracksAudioFeaturesWithoutDuplicates)
     setAllAudioFeatures(allFavoriteTracksAudioFeaturesWithoutDuplicates)
   }
 
@@ -336,15 +349,6 @@ function App() {
   }
 
 
-  const handleHomeOnClick = () => {
-
-    window.location = "dancealbe"
-
-
-    concatFavoriteTracks()
-    getDanceableTracks()
-
-  }
 
   
 
@@ -373,7 +377,7 @@ function App() {
       }
       
     }
-    console.log(danceableTracksArray)
+    
     setDanceableTracks(danceableTracksArray)
   }
 
@@ -403,7 +407,6 @@ function App() {
       }
       
     }
-    console.log(tracksWithLowValenceArray)
     setTracksWithLowValence(tracksWithLowValenceArray)
   }
  
@@ -430,11 +433,56 @@ function App() {
       }
       
     }
-    console.log(tracksWithHighValenceArray)
     setTracksWithHighValence(tracksWithHighValenceArray)
   }
 
 
+
+  const createPlaylist = (name, tracks) => {
+
+    //Token aus lokal storage holen
+    var localStorageToken = window.localStorage.getItem('token')
+
+    //Hier noch den Namen dynamisch einbinden
+    axios.post('https://api.spotify.com/v1/users/' + currentUsersProfile.display_name + '/playlists', {
+      name: name
+    }, {
+      headers: {
+        'Authorization': `Bearer ${localStorageToken}`
+      }
+    })
+    .then(function (response){
+      addTracksToPlaylist(response.data.id, tracks)
+    })
+    .catch(function (error){
+      console.log(error)
+    })
+
+  }
+
+  const addTracksToPlaylist = (id, tracks) => {
+
+    //Token aus lokal storage holen
+    var localStorageToken = window.localStorage.getItem('token')
+
+    const tracksURIs = tracks.map(track => "spotify:track:" + track[0])
+
+
+    axios.post('https://api.spotify.com/v1/playlists/' + id + '/tracks', {
+      uris: tracksURIs
+    }, {
+      headers: {
+        'Authorization': `Bearer ${localStorageToken}`
+      }
+    })
+    .then(function (response){
+      console.log(response)
+    })
+    .catch(function (error){
+      console.log(error)
+    })
+
+  }
 
 
 
@@ -447,7 +495,7 @@ function App() {
 
         : <button onClick={logout}>Logout</button>} 
 
-
+        <button onClick={createPlaylist}>Erstelle Playlist</button>  
         {token ?
           <>
 
@@ -472,7 +520,7 @@ function App() {
 
 
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} concatFavoriteTracks={handleHomeOnClick} token={token}/>}></Route>   
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence}/>}></Route> 
           

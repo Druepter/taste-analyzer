@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Danceable from "./danceable";
 
 
-export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, concatFavoriteTracks, token}){
+export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token}){
 
     useEffect(() => {
 
@@ -32,7 +32,8 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
             //Über die use Effekt Methoden von App.js werden die weiteren Abfragen verarbeitet
             getFavoriteTracksAudioFeaturesShortTerm()
             getFavoriteTracksAudioFeaturesMediumTerm()
-            getFavoriteTracksAudioFeaturesLongTerm() 
+            getFavoriteTracksAudioFeaturesLongTerm()
+            getCurrentUsersProfile()
         }
        
       
@@ -58,7 +59,6 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
             {/* Eigentlich muss dies hier zu einer Seite führen, welche verschiedene Routen zu 
             verschiedenen Anwendungsfällen besitzt */}
             <Link to="/danceable">Weiter zur Auswertung</Link>
-            <button onClick={concatFavoriteTracks}>Weiter zur Auswertung</button>
             </div>
 
 

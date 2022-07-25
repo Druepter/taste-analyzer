@@ -12,6 +12,7 @@ export default function LowValence({tracksWithLowValence}){
           <br></br>
           <TrackList tracks={tracksWithLowValence}></TrackList>
           <br></br>
+          <br></br>
 
         </>
     )}
