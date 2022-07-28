@@ -2,9 +2,23 @@ import React, { useState, useEffect, useRef} from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+
+
 import Home from "./home";
 import Login from "./login";
 import UserName from "./userName";
+import HideAppBar from "./AppBar";
 import { render } from "@testing-library/react";
 import DanceableSongs from "./danceableSongs";
 import Danceable from "./danceable";
@@ -13,8 +27,27 @@ import LowValence from "./LowValence";
 
 
 
+
+
+
 function App() {
  
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#ecf7ed',
+        main: '#e8f5e9',
+        dark: '#a2aba3',
+        contrastText: '#000',
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#f44336',
+        dark: '#ba000d',
+        contrastText: '#000',
+      },
+    },
+  });
 
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
   const REDIRECT_URI = "http://localhost:3000/home"
@@ -109,7 +142,7 @@ function App() {
   useEffect(() => {
     //Wenn alle Songs geladen sind und danceable Tracks fertig sind erstelle die Playliste dazu
     if(isLoadingAll == false){
-      createPlaylist("Tanzbare Songs", danceableTracks)
+      //createPlaylist("Tanzbare Songs", danceableTracks)
     }
 
   }, [danceableTracks])
@@ -357,7 +390,7 @@ function App() {
     //Iteriere über Audio Features Array
     //Wenn danceibilty über 70% ist in neue Liste schreiben
     //Hole dir Songnamen anhand von id aus favertie Tracks Array
-
+    //Dann schreibe ID, Songnamen, Artist und Cover-Foto in ein Array
     for(var i=0; i < allAudioFeatures.length; i++){
 
       var trackName = ""
@@ -372,12 +405,12 @@ function App() {
       trackInformation.push(allAudioFeatures[i].id)
       trackInformation.push(trackName)
       trackInformation.push(allFavoriteTracks[i].artists)  
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
 
       danceableTracksArray.push(trackInformation)
       }
       
     }
-    
     setDanceableTracks(danceableTracksArray)
   }
 
@@ -477,6 +510,7 @@ function App() {
     })
     .then(function (response){
       console.log(response)
+      alert("Playlist wurde erfolgreich erstellt")
     })
     .catch(function (error){
       console.log(error)
@@ -488,21 +522,28 @@ function App() {
 
   return (
     <>
+
+
+      <ThemeProvider theme={theme}>
+
+      <div style={{backgroundColor: "#f6f6f6", marginRight: "0px", marginLeft: "0px", marginTop: "-10px", marginBottom: "-10px"}}>
+      
+     
+     
       <Router>
         {!token ?
           <Login _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}></Login>
           
 
-        : <button onClick={logout}>Logout</button>} 
-
-        <button onClick={createPlaylist}>Erstelle Playlist</button>  
+        : 
+          <><HideAppBar logout={logout}></HideAppBar></>
+        
+        }
         {token ?
           <>
 
             {isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false ?
-              <>
-                {/*<div>{favoriteTracksShortTerm[0].name}</div>
-                <div>{audioFeaturesShortTerm[0].energy}</div>*/}
+              <> 
               </>
             :
               <>
@@ -514,20 +555,24 @@ function App() {
           
 
           :
-          <p></p>
+          <></>
         } 
 
 
 
         <Routes>
           <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token}/>}></Route>   
-          <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks}/>}></Route> 
+          <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence}/>}></Route> 
           
         </Routes> 
 
 
       </Router>
+      </div>
+
+      </ThemeProvider>
+  
 
       <Helmet>
           <title>Spotify Taste Analyzer</title>
