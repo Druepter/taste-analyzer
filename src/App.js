@@ -20,11 +20,10 @@ import Login from "./login";
 import UserName from "./userName";
 import HideAppBar from "./AppBar";
 import { render } from "@testing-library/react";
-import DanceableSongs from "./danceableSongs";
 import Danceable from "./danceable";
 import {Helmet} from "react-helmet";
 import LowValence from "./LowValence";
-
+import HighValence from "./HighValence";
 
 
 
@@ -74,6 +73,8 @@ function App() {
   const [isLoadingLongTerm, setIsLoadingLongTerm] = useState(true)
   const [isLoadingCurrentUsersProfile, setIsLoadingCurrentUsersProfile] = useState(true)
   const [isLoadingAll, setIsLoadingAll] = useState(true)
+  const [readyToRender, setReadyToRender] = useState(false)
+
 
   const [danceableTracks, setDanceableTracks] = useState();
   const danceableTracksArray = []
@@ -134,6 +135,10 @@ function App() {
       getDanceableTracks()
       getTracksWithLowValence()
       getTracksWithHighValence()
+      //Nachdem alle Tracks zusammengebaut wurden, wird der State readyToRender auf true gesetzt
+      //Dieser wird an die Homepage weitergeleitet
+      //Somit weiß diese wann alles geladen ist und sie ihren Content anzeigen kann
+      setReadyToRender(true)
     }
 
   }, [allFavoriteTracks])
@@ -418,29 +423,43 @@ function App() {
 
   const getTracksWithLowValence = () => {
     //Iteriere über Audio Features Array
-    //Wenn Valence unter 0.3 ist in neue Liste schreiben
+    //Wenn Valence unter 0.25 ist in neue Liste schreiben
     //Hole dir Songnamen anhand von id aus favertie Tracks Array
 
+
+    //Interiere über alle AudioFeatures von allen Tracks
     for(var i=0; i < allAudioFeatures.length; i++){
 
       var trackName = ""
 
+      //Wenn ein Tracks weniger Valence als 0.25 hat dann suche den Namen
+      //Der Name ist nicht im Audio Featrues Array. Deshalb muss über das favorite Song Array iteriert werden um den Namen zu bekommen
       if(allAudioFeatures[i].valence < 0.25){
         for(var j=0; j < allFavoriteTracks.length; j++){
           if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
             trackName = allFavoriteTracks[j].name
           }
         }
+      //Hier werden die Informationen zu den Tracks zusammengestellt welche gebraucht werden  
+      //Daraus wird im Anschluss ein neues Array gebildet, welches nur die Tracks mit niedriger Valence enthalten
       const trackInformation = []
+      //ID des Tracks
       trackInformation.push(allAudioFeatures[i].id)
+      //Name des Tracks
       trackInformation.push(trackName)
+      //Artist des Tracks
       trackInformation.push(allFavoriteTracks[i].artists)
-    
+      //Cover des Tracks
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
+        
+      //Füge diese Informationen ins Array
       tracksWithLowValenceArray.push(trackInformation)
       }
       
     }
+    //setze state
     setTracksWithLowValence(tracksWithLowValenceArray)
+    console.log(tracksWithLowValenceArray)
   }
  
   const getTracksWithHighValence = () => {
@@ -458,14 +477,17 @@ function App() {
             trackName = allFavoriteTracks[j].name
           }
         }
-      const idAndName = []
-      idAndName.push(allAudioFeatures[i].id)
-      idAndName.push(trackName)
+      const trackInformation = []
+      trackInformation.push(allAudioFeatures[i].id)
+      trackInformation.push(trackName)
+      trackInformation.push(allFavoriteTracks[i].artists)
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
     
-      tracksWithHighValenceArray.push(idAndName)
+      tracksWithHighValenceArray.push(trackInformation)
       }
       
     }
+    console.log(tracksWithHighValenceArray)
     setTracksWithHighValence(tracksWithHighValenceArray)
   }
 
@@ -539,7 +561,7 @@ function App() {
           <><HideAppBar logout={logout}></HideAppBar></>
         
         }
-        {token ?
+        {/*{token ?
           <>
 
             {isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false ?
@@ -556,14 +578,15 @@ function App() {
 
           :
           <></>
-        } 
+        } */}
 
 
 
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token}/>}></Route>   
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist}/>}></Route> 
-          <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence}/>}></Route> 
+          <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist}/>}></Route> 
+          <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist}/>}></Route> 
           
         </Routes> 
 

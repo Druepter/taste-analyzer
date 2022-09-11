@@ -2,25 +2,24 @@ import React, { useState, useEffect} from "react";
 import TrackList from "./trackList";
 import CategoryPageHeader from "./categoryPageHeader";
 import Container from '@mui/material/Container';
-import discoImageSmall from "./assets/disco_klein.png"
 import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 import traurigImage from "./assets/traurig.jpg"
 
-export default function LowValence({tracksWithLowValence, createPlaylist}){
+export default function HighValence({tracksWithHighValence, createPlaylist}){
 
     return (
         <>
           <Container sx={{boxShadow: 1}} style={{backgroundColor: "white"}} maxWidth="md">
 
           <CategoryPageHeader
-            title='Traurige Songs'
+            title='Fröhliche Songs'
             image={traurigImage}
-            description='Auch traurige Songs gehören zu deinem Repertoire'>         
+            description='Positive Energie'>         
           </CategoryPageHeader>
-          <TrackList tracks={tracksWithLowValence}></TrackList>
+          <TrackList tracks={tracksWithHighValence}></TrackList>
 
 
-          <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Traurige Songs" tracks={tracksWithLowValence}></ButtonCreatePlaylist>
+          <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Fröhliche Songs" tracks={tracksWithHighValence}></ButtonCreatePlaylist>
 
 
           </Container>

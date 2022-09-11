@@ -1,36 +1,28 @@
 import React, { useState, useEffect} from "react";
 import TrackList from "./trackList";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import CategoryPageHeader from "./categoryPageHeader";
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Box from "@mui/material/Box";
+import discoImageSmall from "./assets/disco_klein.png"
+import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 
 
 export default function Danceable({danceableTracks, createPlaylist}){
 
-    const handleCreatePlaylistClick = () =>{
-      createPlaylist("Tanzbare Songs", danceableTracks)
-    }
 
     return (
         <>
           <Container sx={{boxShadow: 1}}style={{backgroundColor: "white"}} maxWidth="md">
 
-            <CategoryPageHeader></CategoryPageHeader>
+            <CategoryPageHeader
+              title='Deine Tanzbaren Songs'
+              image={discoImageSmall}
+              description='In deinen Lieblingssongs finden sich einige Lieder zu denen sich super das Tanzbein schwingen lässt:'>         
+            </CategoryPageHeader>
             <TrackList tracks={danceableTracks}></TrackList>
             
 
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx = {{paddingTop: 4, paddingBottom: 5}}
-            >
-              <Button onClick={handleCreatePlaylistClick} variant="contained" size="large">Erstelle Playlist</Button>
-            </Box>
+            <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Tanzbare Songs" tracks={danceableTracks}></ButtonCreatePlaylist>
 
-            {/*<Link to="/lowValence">Weiter zur Auswertung</Link>*/}
 
           </Container>
         </>

@@ -7,6 +7,9 @@ import Danceable from "./danceable";
 import image from "./assets/Download.png"
 import discoImageSmall from "./assets/disco_klein.png"
 import CardMedia from '@mui/material/CardMedia';
+import traurigImage from "./assets/traurig.jpg"
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 
 import { styled } from '@mui/material/styles';
@@ -44,7 +47,7 @@ function generate(element) {
 
 
 
-export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token}){
+export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token, readyToRender}){
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
 
@@ -62,6 +65,10 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
 
     }, [])
 
+
+    useEffect(() => {
+      console.log(readyToRender)
+    }, [readyToRender])
 
     useEffect(() => {
         //Es wird gewartet bis der Token geladen ist
@@ -83,54 +90,58 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
 
     return (
         <>
-            <Container sx={{boxShadow: 1}} style={{backgroundColor: "white", paddingTop: 6}} maxWidth="md">
-              <Typography variant="h3" sx={{mb: 2, mt: 4, fontWeight: 550}}>
-                  Willkommen beim Taste Analyzer
-              </Typography>
-              <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
-                Wir haben deine Liebliegssongs analysiert und diese für dich Kategorisiert.
-                Du brauchst einen Song für eine bestimmte Stimmung?
-                Hast Lust zu deine Liebliegssongs zu tanzen?
-                Alles kein Problem. Wir haben diese für dich in verschiedenen Playlisten zusammengestellt.
-                Tipp: Wenn du auf einer Seite herunterscrollst wirst du einen Button finden der eine Playlist auf deinem
-                Spotify Profil erstellt.
-              </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={4} sm={6}>
-                  <Card sx={{boxShadow: 'none'}}>
-                  <CardActionArea component={RouterLink} to="/danceable">
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={discoImageSmall}
-                    alt="green iguana"
-                  />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        Tanzebare Songs
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Sieh dir deine Songs an, welche sich perfekt für die nächste Party eignen!
-                        Damit bekommst du jeden auf die Tanzfläche!
-                      </Typography>
-                    </CardContent>  
-                    {/*<CardActions>
-                      <Button size="small">Jetzt ansehen</Button>
-                      </CardActions>*/}
-                    </CardActionArea>
-                  </Card>
+          {readyToRender ?
+                      <>
+                      <Container sx={{boxShadow: 1}} style={{backgroundColor: "white", paddingTop: 6}} maxWidth="md">
+                        <Typography variant="h3" sx={{mb: 2, mt: 4, fontWeight: 550}}>
+                            Willkommen beim Taste Analyzer
+                        </Typography>
+                        <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
+                          Wir haben deine Liebliegssongs analysiert und diese für dich Kategorisiert.
+                          Du brauchst einen Song für eine bestimmte Stimmung?
+                          Hast Lust zu deine Liebliegssongs zu tanzen?
+                          Alles kein Problem. Wir haben diese für dich in verschiedenen Playlisten zusammengestellt.
+                          Tipp: Wenn du auf einer Seite herunterscrollst wirst du einen Button finden der eine Playlist auf deinem
+                          Spotify Profil erstellt.
+                        </Typography>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12} md={4} sm={6}>
+                            <DashboardCard link='/danceable' image={discoImageSmall} title='Songs zum tanzen' description='Deine tanzenbaren Songs'></DashboardCard>
+                          </Grid>
+                          <Grid item xs={12} md={4} sm={6}>
+                            <DashboardCard link='/lowValence' image={traurigImage} title='Traurige Songs' description='Deine traurigen Songs'></DashboardCard>
+                          </Grid>
+                          <Grid item xs={12} md={4} sm={6}>
+                            <DashboardCard link='/highValence' image={discoImageSmall} title='Fröhliche Songs' description='Hier deine fröhlichen Songs'></DashboardCard>
+                          </Grid>
+                        </Grid>
+                    </Container>
+
+
+              </>
+            :
+            <>
+                            <Container sx={{boxShadow: 1}} style={{backgroundColor: "white", paddingTop: 1}} maxWidth="md">
+                <Grid container sapcing={0} align="center" justify="center" direction="column">
+                  <Grid item>
+                    <CircularProgress />
+                  </Grid>
+
+
                 </Grid>
-                <Grid item xs={12} md={4} sm={6}>
-                  <DashboardCard link='/danceable' image={discoImageSmall} title='Tanzbare Songs' description='Hier deine tanzbaren Songs'></DashboardCard>
-                </Grid>
-                <Grid item xs={12} md={4} sm={6}>
-                  <DashboardCard link='/danceable' image={discoImageSmall} title='Tanzbare Songs' description='Hier deine tanzbaren Songs'></DashboardCard>
-                </Grid>
-                <Grid item xs={12} md={4} sm={6}>
-                  <DashboardCard link='/danceable' image={discoImageSmall} title='Tanzbare Songs' description='Hier deine tanzbaren Songs'></DashboardCard>
-                </Grid>
-              </Grid>
-            </Container>
+                
+                
+                {/*<Box sx={{display: 'flex', margin: 'auto', alignItems: 'center', justifyContent: 'center'}}>
+                  <CircularProgress />
+        </Box>*/}
+
+              </Container>
+            </>
+
+          }
+
+
+
 
 
 
