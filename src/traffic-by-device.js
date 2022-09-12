@@ -4,20 +4,28 @@ import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import PhoneIcon from '@mui/icons-material/Phone';
 import TabletIcon from '@mui/icons-material/Tablet';
 
-export const TrafficByDevice = (props) => {
+
+
+export default function TrafficByDevice({chartColors, chartData, chartLabels}){
+
+//export const TrafficByDevice = (props, test) => {
   const theme = useTheme();
+
+  console.log(chartData)
+
+  const huhu = [45, 56, 89]
 
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
-        backgroundColor: ['#3F51B5', '#e53935', '#FB8C00'],
+        data: chartData,
+        backgroundColor: chartColors,
         borderWidth: 8,
         borderColor: '#FFFFFF',
         hoverBorderColor: '#FFFFFF'
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: chartLabels
   };
 
   const options = {
@@ -64,8 +72,8 @@ export const TrafficByDevice = (props) => {
   ];
 
   return (
-    <Card {...props}>
-      <CardHeader title="Traffic by Device" />
+    <Card>
+      <CardHeader title='huhu' />
       <Divider />
       <CardContent>
         <Box

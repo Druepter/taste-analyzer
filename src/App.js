@@ -75,6 +75,7 @@ function App() {
   const [isLoadingCurrentUsersProfile, setIsLoadingCurrentUsersProfile] = useState(true)
   const [isLoadingAll, setIsLoadingAll] = useState(true)
   const [readyToRender, setReadyToRender] = useState(false)
+  const [readyToBuildChart, setReadyToBuildChart] = useState(false)
 
 
   const [danceableTracks, setDanceableTracks] = useState();
@@ -88,6 +89,11 @@ function App() {
 
   const [acousticTracks, setAcousticTracks] = useState();
   const acousticTracksArray = []
+
+  const [chartColors, setChartColors] = useState();
+  const [chartData, setChartData] = useState()
+  const [chartLabels, setChartLabels] = useState()
+
 
   var favoriteTracksArrayShortTerm
   var favoriteTracksArrayMediumTerm
@@ -140,14 +146,50 @@ function App() {
       getTracksWithLowValence()
       getTracksWithHighValence()
       getTracksAcoustic()
-      //Nachdem alle Tracks zusammengebaut wurden, wird der State readyToRender auf true gesetzt
-      //Dieser wird an die Homepage weitergeleitet
-      //Somit weiß diese wann alles geladen ist und sie ihren Content anzeigen kann
-      setReadyToRender(true)
+
+
+
+      //Nachdem alle Tracks zusammengebaut wurden, wird der State readyToBuildChart auf true gesetzt
+      //Dadurch wird getriggert, dass das Kreisdiagramm zusammengebaut werden kann, da nun alle benötigten Informationen vorhanden sind
+      setReadyToBuildChart(true)
     }
 
   }, [allFavoriteTracks])
 
+
+  useEffect(() => {
+
+    if(readyToBuildChart == true){
+      
+      //Hier werden Arrays zusammengebaut welches für das Kreisdiagramm verwendet wird
+      //Diese werden an die Komponete Home übergeben, welche diese dann weiter gibt an die Komponente Kreisdiagramm
+      //Farben, welche für das Kreisdiagramm verwendet werden sollen
+      var colors = []
+      //data, Die Datenwerte, welche im Kreisdiagramm verwendet werden => Dies entspricht den Längen der einzelnen Track Arrays
+      var data = []
+      //label, Der Name, welcher im Kreisdiagramm angezeigt werden soll => Name der Kategorie
+      var labels = []
+
+      if(acousticTracks.length >= 3){
+        colors.push('#eec591')
+        data.push(acousticTracks.length)
+        labels.push('Akustische Songs')
+      }
+
+      console.log(data)
+      //Setze die States für die drei verschiedenen Arrays
+      setChartColors(colors)
+      setChartData(data)
+      setChartLabels(labels)
+
+      //Nachdem das Kreisdiagramm zusammengebaut wurde sind nun alle Informationen vollständig um die Homepage zu rendern
+      //Dazu wird das State readyToRender auf true gesetzt
+      //Dieser wird an die Komponete Home übergeben
+      setReadyToRender(true)
+    }
+    
+
+  }, [readyToBuildChart])
 
   useEffect(() => {
     //Wenn alle Songs geladen sind und danceable Tracks fertig sind erstelle die Playliste dazu
@@ -630,7 +672,7 @@ function App() {
 
 
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender}/>}></Route>   
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist}/>}></Route>

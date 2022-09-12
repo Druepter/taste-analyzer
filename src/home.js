@@ -36,7 +36,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 import AppCurrentVisits from "./PieChart";
-import { TrafficByDevice } from "./traffic-by-device";
+import TrafficByDevice from "./traffic-by-device";
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
@@ -59,7 +59,7 @@ function generate(element) {
 
 
 
-export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token, readyToRender}){
+export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token, readyToRender, chartColors, chartData, chartLabels}){
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
 
@@ -109,8 +109,8 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                             Willkommen beim Taste Analyzer
                         </Typography>
 
-                      
-                        <TrafficByDevice ></TrafficByDevice>
+                        
+                        <TrafficByDevice chartColors={chartColors} chartData={chartData} chartLabels={chartLabels}></TrafficByDevice>
                         
 
 
