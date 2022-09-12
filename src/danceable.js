@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import TrackList from "./trackList";
 import CategoryPageHeader from "./categoryPageHeader";
 import Container from '@mui/material/Container';
-import discoImageSmall from "./assets/disco_klein.png"
+import danceableImageSmall from "./assets/tanzbar_klein.jpg"
 import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 
 
@@ -15,7 +15,7 @@ export default function Danceable({danceableTracks, createPlaylist}){
 
             <CategoryPageHeader
               title='Deine Tanzbaren Songs'
-              image={discoImageSmall}
+              image={danceableImageSmall}
               description='In deinen Lieblingssongs finden sich einige Lieder zu denen sich super das Tanzbein schwingen lässt:'>         
             </CategoryPageHeader>
             <TrackList tracks={danceableTracks}></TrackList>

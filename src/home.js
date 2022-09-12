@@ -6,8 +6,12 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Danceable from "./danceable";
 import image from "./assets/Download.png"
 import discoImageSmall from "./assets/disco_klein.png"
+import danceableImageSmall from "./assets/tanzbar_klein.jpg"
 import CardMedia from '@mui/material/CardMedia';
-import traurigImage from "./assets/traurig.jpg"
+import lowValenceImageSmall from "./assets/traurig_klein.jpg"
+import highValenceImageSmall from "./assets/gluecklich_klein.jpg";
+import acousticImageSmall from "./assets/akustik_klein.jpg";
+
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
@@ -31,6 +35,14 @@ import Divider from '@mui/material/Divider';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
+import AppCurrentVisits from "./PieChart";
+import { TrafficByDevice } from "./traffic-by-device";
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
 
 
 function generate(element) {
@@ -96,6 +108,12 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                         <Typography variant="h3" sx={{mb: 2, mt: 4, fontWeight: 550}}>
                             Willkommen beim Taste Analyzer
                         </Typography>
+
+                      
+                        <TrafficByDevice ></TrafficByDevice>
+                        
+
+
                         <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
                           Wir haben deine Liebliegssongs analysiert und diese für dich Kategorisiert.
                           Du brauchst einen Song für eine bestimmte Stimmung?
@@ -103,16 +121,20 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                           Alles kein Problem. Wir haben diese für dich in verschiedenen Playlisten zusammengestellt.
                           Tipp: Wenn du auf einer Seite herunterscrollst wirst du einen Button finden der eine Playlist auf deinem
                           Spotify Profil erstellt.
+                          Dein Profil: Melanchonisch - Fröhlich
                         </Typography>
                         <Grid container spacing={2}>
                           <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/danceable' image={discoImageSmall} title='Songs zum tanzen' description='Deine tanzenbaren Songs'></DashboardCard>
+                            <DashboardCard link='/danceable' image={danceableImageSmall} title='Songs zum tanzen' description='Deine tanzenbaren Songs'></DashboardCard>
                           </Grid>
                           <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/lowValence' image={traurigImage} title='Traurige Songs' description='Deine traurigen Songs'></DashboardCard>
+                            <DashboardCard link='/lowValence' image={lowValenceImageSmall} title='Traurige Songs' description='Deine traurigen Songs'></DashboardCard>
                           </Grid>
                           <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/highValence' image={discoImageSmall} title='Fröhliche Songs' description='Hier deine fröhlichen Songs'></DashboardCard>
+                            <DashboardCard link='/highValence' image={highValenceImageSmall} title='Fröhliche Songs' description='Hier deine fröhlichen Songs'></DashboardCard>
+                          </Grid>
+                          <Grid item xs={12} md={4} sm={6}>
+                            <DashboardCard link='/acoustic' image={acousticImageSmall} title='Akustische Songs' description='Organische Klänge'></DashboardCard>
                           </Grid>
                         </Grid>
                     </Container>

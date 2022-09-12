@@ -49,15 +49,17 @@ export default function HideAppBar({props, logout}) {
         <AppBar>
           <Toolbar>
             <IconButton
-                component={RouterLink} to="/home"
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-            >
-                <ArrowBackIcon />
-            </IconButton>
+            component={RouterLink} to="/home"
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+        >
+            <ArrowBackIcon />
+        </IconButton>
+            
+
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Taste Analyzer
             </Typography>

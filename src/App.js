@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef} from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -10,6 +10,7 @@ import '@fontsource/roboto/700.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 import Alert from '@mui/material/Alert';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
@@ -24,7 +25,7 @@ import Danceable from "./danceable";
 import {Helmet} from "react-helmet";
 import LowValence from "./LowValence";
 import HighValence from "./HighValence";
-
+import Acoustic from "./Acoustic";
 
 
 
@@ -85,6 +86,9 @@ function App() {
   const [tracksWithHighValence, setTracksWithHighValence] = useState()
   const tracksWithHighValenceArray = []
 
+  const [acousticTracks, setAcousticTracks] = useState();
+  const acousticTracksArray = []
+
   var favoriteTracksArrayShortTerm
   var favoriteTracksArrayMediumTerm
   var favoriteTracksArrayLongTerm
@@ -135,6 +139,7 @@ function App() {
       getDanceableTracks()
       getTracksWithLowValence()
       getTracksWithHighValence()
+      getTracksAcoustic()
       //Nachdem alle Tracks zusammengebaut wurden, wird der State readyToRender auf true gesetzt
       //Dieser wird an die Homepage weitergeleitet
       //Somit weiß diese wann alles geladen ist und sie ihren Content anzeigen kann
@@ -156,6 +161,7 @@ function App() {
   const logout = () => {
     setToken("")
     window.localStorage.removeItem("token");
+    window.location.replace("/");
   }
 
   //Hole die Profildetails des aktuell eingeloggten Nutzers
@@ -491,6 +497,48 @@ function App() {
     setTracksWithHighValence(tracksWithHighValenceArray)
   }
 
+  const getTracksAcoustic = () => {
+    //Iteriere über Audio Features Array
+    //Wenn acousticness über 0.7 ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
+
+
+    //Interiere über alle AudioFeatures von allen Tracks
+    for(var i=0; i < allAudioFeatures.length; i++){
+
+      var trackName = ""
+
+      //Wenn ein Tracks mehr acousticness als 0.7 hat dann suche den Namen
+      //Der Name ist nicht im Audio Featrues Array. Deshalb muss über das favorite Song Array iteriert werden um den Namen zu bekommen
+      if(allAudioFeatures[i].acousticness > 0.7){
+        for(var j=0; j < allFavoriteTracks.length; j++){
+          if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
+            trackName = allFavoriteTracks[j].name
+          }
+        }
+      //Hier werden die Informationen zu den Tracks zusammengestellt welche gebraucht werden  
+      //Daraus wird im Anschluss ein neues Array gebildet, welches nur die Tracks mit acousticness über 0.7 enthalten
+      const trackInformation = []
+      //ID des Tracks
+      trackInformation.push(allAudioFeatures[i].id)
+      //Name des Tracks
+      trackInformation.push(trackName)
+      //Artist des Tracks
+      trackInformation.push(allFavoriteTracks[i].artists)
+      //Cover des Tracks
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
+        
+      //Füge diese Informationen ins Array
+      acousticTracksArray.push(trackInformation)
+      }
+      
+    }
+    //setze state
+    setAcousticTracks(acousticTracksArray)
+    console.log(acousticTracksArray)
+  }
+
+
 
 
   const createPlaylist = (name, tracks) => {
@@ -549,13 +597,13 @@ function App() {
       <ThemeProvider theme={theme}>
 
       <div style={{backgroundColor: "#f6f6f6", marginRight: "0px", marginLeft: "0px", marginTop: "-10px", marginBottom: "-10px"}}>
-      
-     
-     
+        
       <Router>
         {!token ?
+          <>
+
           <Login _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}></Login>
-          
+          </>
 
         : 
           <><HideAppBar logout={logout}></HideAppBar></>
@@ -581,13 +629,12 @@ function App() {
         } */}
 
 
-
         <Routes>
           <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist}/>}></Route> 
-          <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist}/>}></Route> 
-          
+          <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist}/>}></Route>
+          <Route path="/acoustic" element={<Acoustic acousticTracks={acousticTracks} createPlaylist={createPlaylist}/>}></Route>          
         </Routes> 
 
 

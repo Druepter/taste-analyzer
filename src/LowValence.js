@@ -2,9 +2,8 @@ import React, { useState, useEffect} from "react";
 import TrackList from "./trackList";
 import CategoryPageHeader from "./categoryPageHeader";
 import Container from '@mui/material/Container';
-import discoImageSmall from "./assets/disco_klein.png"
 import ButtonCreatePlaylist from "./buttonCreatePlaylist";
-import traurigImage from "./assets/traurig.jpg"
+import lowValenceImage from "./assets/traurig_mittel.jpg"
 
 export default function LowValence({tracksWithLowValence, createPlaylist}){
 
@@ -14,7 +13,7 @@ export default function LowValence({tracksWithLowValence, createPlaylist}){
 
           <CategoryPageHeader
             title='Traurige Songs'
-            image={traurigImage}
+            image={lowValenceImage}
             description='Auch traurige Songs gehören zu deinem Repertoire'>         
           </CategoryPageHeader>
           <TrackList tracks={tracksWithLowValence}></TrackList>
