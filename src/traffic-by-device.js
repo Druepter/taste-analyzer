@@ -72,7 +72,20 @@ export default function TrafficByDevice({chartColors, chartData, chartLabels}){
   ];
 
   return (
-    <Card>
+    
+    <Box
+    sx={{
+      height: 300,
+      position: 'relative'
+    }}
+  >
+    <Doughnut
+      data={data}
+      options={options}
+    />
+  </Box>
+
+    /*<Card>
       <CardHeader title='huhu' />
       <Divider />
       <CardContent>
@@ -125,6 +138,6 @@ export default function TrafficByDevice({chartColors, chartData, chartLabels}){
           ))}
         </Box>
       </CardContent>
-    </Card>
+    </Card>*/
   );
 };

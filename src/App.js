@@ -170,10 +170,29 @@ function App() {
       //label, Der Name, welcher im Kreisdiagramm angezeigt werden soll => Name der Kategorie
       var labels = []
 
+      //Wenn mehr als 3 akusitsche Songs in den Lieblingssongs sind dann füge sie hinzu
       if(acousticTracks.length >= 3){
-        colors.push('#eec591')
+        colors.push('#DAB88B')
         data.push(acousticTracks.length)
         labels.push('Akustische Songs')
+      }
+      //Wenn mehr als 3 tanzbare Songs in den Lieblingssongs sind dann füge sie hinzu
+      if(danceableTracks.length >= 3){
+        colors.push('#8346F9')
+        data.push(danceableTracks.length)
+        labels.push('Tanzebare Songs')
+      }
+      //Wenn mehr als 3 fröhliche Songs in den Lieblingssongs sind dann füge sie hinzu
+      if(tracksWithHighValence.length >= 3){
+        colors.push('#B9E5F0')
+        data.push(tracksWithHighValence.length)
+        labels.push('Fröhliche Songs')
+      }
+      //Wenn mehr als 3 traurige Songs in den Lieblingssongs sind dann füge sie hinzu
+      if(tracksWithLowValence.length >= 3){
+        colors.push('#5D5852')
+        data.push(tracksWithLowValence.length)
+        labels.push('Traurige Songs')
       }
 
       console.log(data)

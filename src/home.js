@@ -110,7 +110,7 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                         </Typography>
 
                         
-                        <TrafficByDevice chartColors={chartColors} chartData={chartData} chartLabels={chartLabels}></TrafficByDevice>
+                        
                         
 
 
@@ -123,6 +123,13 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                           Spotify Profil erstellt.
                           Dein Profil: Melanchonisch - Fröhlich
                         </Typography>
+
+                        <TrafficByDevice chartColors={chartColors} chartData={chartData} chartLabels={chartLabels}></TrafficByDevice>
+
+                        <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
+                          In den folgenden Kacheln sind die Songs aufgeteilt in Playlisten zu sehen
+                        </Typography>
+
                         <Grid container spacing={2}>
                           <Grid item xs={12} md={4} sm={6}>
                             <DashboardCard link='/danceable' image={danceableImageSmall} title='Songs zum tanzen' description='Deine tanzenbaren Songs'></DashboardCard>
