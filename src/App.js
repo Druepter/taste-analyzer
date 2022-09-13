@@ -26,6 +26,7 @@ import {Helmet} from "react-helmet";
 import LowValence from "./LowValence";
 import HighValence from "./HighValence";
 import Acoustic from "./Acoustic";
+import Instrumental from "./Instrumental";
 
 
 
@@ -90,6 +91,10 @@ function App() {
   const [acousticTracks, setAcousticTracks] = useState();
   const acousticTracksArray = []
 
+  const [instrumentalTracks, setInstrumentalTracks] = useState();
+  const instrumentalTracksArray = []
+
+
   const [chartColors, setChartColors] = useState();
   const [chartData, setChartData] = useState()
   const [chartLabels, setChartLabels] = useState()
@@ -107,6 +112,11 @@ function App() {
   useEffect(() => {
     const hash = window.location.hash
     let token = window.localStorage.getItem("token")
+
+    //Wenn ein Token vorhanden ist dann gehe direkt auf die Homepage
+    if(token && window.location.pathname == "/"){
+      window.location.href = "/home"
+    }
 
     if(!token && hash){
       token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
@@ -146,6 +156,7 @@ function App() {
       getTracksWithLowValence()
       getTracksWithHighValence()
       getTracksAcoustic()
+      getInstrumentalTracks()
 
 
 
@@ -193,6 +204,12 @@ function App() {
         colors.push('#5D5852')
         data.push(tracksWithLowValence.length)
         labels.push('Traurige Songs')
+      }
+      //Wenn mehr als 3 instrumentale Songs in den Lieblingssongs sind dann füge sie hinzu
+      if(instrumentalTracks.length >= 3){
+        colors.push('#522A4C')
+        data.push(instrumentalTracks.length)
+        labels.push('Instrumentale Songs')
       }
 
       console.log(data)
@@ -596,10 +613,48 @@ function App() {
     }
     //setze state
     setAcousticTracks(acousticTracksArray)
-    console.log(acousticTracksArray)
   }
 
+  const getInstrumentalTracks = () => {
+    //Iteriere über Audio Features Array
+    //Wenn instrumentalness über 0.9 ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
 
+
+    //Interiere über alle AudioFeatures von allen Tracks
+    for(var i=0; i < allAudioFeatures.length; i++){
+
+      var trackName = ""
+
+      //Wenn ein Tracks mehr instrumentalness als 0.9 hat dann suche den Namen
+      //Der Name ist nicht im Audio Featrues Array. Deshalb muss über das favorite Song Array iteriert werden um den Namen zu bekommen
+      if(allAudioFeatures[i].instrumentalness > 0.9){
+        for(var j=0; j < allFavoriteTracks.length; j++){
+          if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
+            trackName = allFavoriteTracks[j].name
+          }
+        }
+      //Hier werden die Informationen zu den Tracks zusammengestellt welche gebraucht werden  
+      //Daraus wird im Anschluss ein neues Array gebildet, welches nur die Tracks mit instrumentalness über 0.5 enthalten
+      const trackInformation = []
+      //ID des Tracks
+      trackInformation.push(allAudioFeatures[i].id)
+      //Name des Tracks
+      trackInformation.push(trackName)
+      //Artist des Tracks
+      trackInformation.push(allFavoriteTracks[i].artists)
+      //Cover des Tracks
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
+        
+      //Füge diese Informationen ins Array
+      instrumentalTracksArray.push(trackInformation)
+      }
+      
+    }
+    //setze state
+    setInstrumentalTracks(instrumentalTracksArray)
+    console.log(instrumentalTracksArray)
+  }
 
 
   const createPlaylist = (name, tracks) => {
@@ -657,7 +712,7 @@ function App() {
 
       <ThemeProvider theme={theme}>
 
-      <div style={{backgroundColor: "#f6f6f6", marginRight: "0px", marginLeft: "0px", marginTop: "-10px", marginBottom: "-10px"}}>
+      <div style={{backgroundColor: "#f6f6f6", marginRight: "-10px", marginLeft: "-10px", marginTop: "-10px", marginBottom: "-10px"}}>
         
       <Router>
         {!token ?
@@ -695,7 +750,8 @@ function App() {
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist}/>}></Route>
-          <Route path="/acoustic" element={<Acoustic acousticTracks={acousticTracks} createPlaylist={createPlaylist}/>}></Route>          
+          <Route path="/acoustic" element={<Acoustic acousticTracks={acousticTracks} createPlaylist={createPlaylist}/>}></Route>
+          <Route path="/instrumental" element={<Instrumental instrumentalTracks={instrumentalTracks} createPlaylist={createPlaylist}/>}></Route>          
         </Routes> 
 
 

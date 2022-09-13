@@ -11,6 +11,7 @@ import CardMedia from '@mui/material/CardMedia';
 import lowValenceImageSmall from "./assets/traurig_klein.jpg"
 import highValenceImageSmall from "./assets/gluecklich_klein.jpg";
 import acousticImageSmall from "./assets/akustik_klein.jpg";
+import instrumentalImageSmall from "./assets/instrumental_klein.jpg";
 
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -106,22 +107,20 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                       <>
                       <Container sx={{boxShadow: 1}} style={{backgroundColor: "white", paddingTop: 6}} maxWidth="md">
                         <Typography variant="h3" sx={{mb: 2, mt: 4, fontWeight: 550}}>
-                            Willkommen beim Taste Analyzer
+                            Herzlich Willkommen beim Spotify Taste Analyzer
                         </Typography>
 
-                        
-                        
-                        
-
-
                         <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
-                          Wir haben deine Liebliegssongs analysiert und diese für dich Kategorisiert.
-                          Du brauchst einen Song für eine bestimmte Stimmung?
-                          Hast Lust zu deine Liebliegssongs zu tanzen?
-                          Alles kein Problem. Wir haben diese für dich in verschiedenen Playlisten zusammengestellt.
-                          Tipp: Wenn du auf einer Seite herunterscrollst wirst du einen Button finden der eine Playlist auf deinem
-                          Spotify Profil erstellt.
-                          Dein Profil: Melanchonisch - Fröhlich
+                          Wir haben deine Lieblingssongs erfolgreich analysiert und daraus ein Profil
+                          für deinen Musikgeschmack erstellt. Dazu haben wir deine meinstgespielten Tracks
+                          nach verschiedenen Kriterien kategorisiert. In dem nun folgenden Kreisdiagramm
+                          siehst du welche Kategorien du am meisten hörst. Weiter unten auf dieser Seite sind
+                          die einzelnen Kategorien mit Songs aufgeführt. Tipp: Wenn du auf einer Kategorieseite
+                          herunterscrollst findest du einen Button um eine Playlist zu erstellen!
+                        </Typography>
+
+                        <Typography variant="h4" sx={{mb: 2, mt: 4, fontWeight: 550, fontSize: 30}}>
+                            Deine Top Kategorien:
                         </Typography>
 
                         <TrafficByDevice chartColors={chartColors} chartData={chartData} chartLabels={chartLabels}></TrafficByDevice>
@@ -143,6 +142,9 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                           <Grid item xs={12} md={4} sm={6}>
                             <DashboardCard link='/acoustic' image={acousticImageSmall} title='Akustische Songs' description='Organische Klänge'></DashboardCard>
                           </Grid>
+                          <Grid item xs={12} md={4} sm={6}>
+                            <DashboardCard link='/instrumental' image={instrumentalImageSmall} title='Instrumentale Songs' description='Alles im Zeichen der Instrumente'></DashboardCard>
+                          </Grid>                          
                         </Grid>
                     </Container>
 
