@@ -40,7 +40,7 @@ import AppCurrentVisits from "./PieChart";
 import TrafficByDevice from "./traffic-by-device";
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-
+import DashboardCards from './DashboardCards'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -60,7 +60,7 @@ function generate(element) {
 
 
 
-export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token, readyToRender, chartColors, chartData, chartLabels}){
+export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token, readyToRender, chartColors, chartData, chartLabels, trackCategories}){
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
 
@@ -128,23 +128,9 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                         <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
                           In den folgenden Kacheln sind die Songs aufgeteilt in Playlisten zu sehen
                         </Typography>
-
+                        
                         <Grid container spacing={2}>
-                          <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/danceable' image={danceableImageSmall} title='Songs zum tanzen' description='Deine tanzenbaren Songs'></DashboardCard>
-                          </Grid>
-                          <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/lowValence' image={lowValenceImageSmall} title='Traurige Songs' description='Deine traurigen Songs'></DashboardCard>
-                          </Grid>
-                          <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/highValence' image={highValenceImageSmall} title='Fröhliche Songs' description='Hier deine fröhlichen Songs'></DashboardCard>
-                          </Grid>
-                          <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/acoustic' image={acousticImageSmall} title='Akustische Songs' description='Organische Klänge'></DashboardCard>
-                          </Grid>
-                          <Grid item xs={12} md={4} sm={6}>
-                            <DashboardCard link='/instrumental' image={instrumentalImageSmall} title='Instrumentale Songs' description='Alles im Zeichen der Instrumente'></DashboardCard>
-                          </Grid>                          
+                          <DashboardCards trackCategories={trackCategories}></DashboardCards>
                         </Grid>
                     </Container>
 

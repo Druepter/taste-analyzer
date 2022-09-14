@@ -28,7 +28,11 @@ import HighValence from "./HighValence";
 import Acoustic from "./Acoustic";
 import Instrumental from "./Instrumental";
 
-
+import danceableImageSmall from "./assets/tanzbar_klein.jpg"
+import lowValenceImageSmall from "./assets/traurig_klein.jpg"
+import highValenceImageSmall from "./assets/gluecklich_klein.jpg";
+import acousticImageSmall from "./assets/akustik_klein.jpg";
+import instrumentalImageSmall from "./assets/instrumental_klein.jpg";
 
 
 function App() {
@@ -95,10 +99,11 @@ function App() {
   const instrumentalTracksArray = []
 
 
-  const [chartColors, setChartColors] = useState();
+  const [chartColors, setChartColors] = useState()
   const [chartData, setChartData] = useState()
   const [chartLabels, setChartLabels] = useState()
 
+  const [trackCategories, setTrackCategories] = useState()
 
   var favoriteTracksArrayShortTerm
   var favoriteTracksArrayMediumTerm
@@ -181,42 +186,94 @@ function App() {
       //label, Der Name, welcher im Kreisdiagramm angezeigt werden soll => Name der Kategorie
       var labels = []
 
+      //Array für Dashboard Karten
+      var trackCategoriesArray = []
+
       //Wenn mehr als 3 akusitsche Songs in den Lieblingssongs sind dann füge sie hinzu
       if(acousticTracks.length >= 3){
         colors.push('#DAB88B')
         data.push(acousticTracks.length)
         labels.push('Akustische Songs')
+
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        var categorieArray = ['/acoustic', acousticImageSmall, 'Akustische Songs', 'Organische Klänge']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
       }
       //Wenn mehr als 3 tanzbare Songs in den Lieblingssongs sind dann füge sie hinzu
       if(danceableTracks.length >= 3){
         colors.push('#8346F9')
         data.push(danceableTracks.length)
         labels.push('Tanzebare Songs')
+
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        var categorieArray = ['/danceable', danceableImageSmall, 'Songs zum tanzen', 'Deine tanzenbaren Songs']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
       }
       //Wenn mehr als 3 fröhliche Songs in den Lieblingssongs sind dann füge sie hinzu
       if(tracksWithHighValence.length >= 3){
         colors.push('#B9E5F0')
         data.push(tracksWithHighValence.length)
         labels.push('Fröhliche Songs')
+
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        var categorieArray = ['/highValence', highValenceImageSmall, 'Fröhliche Songs', 'Hier deine fröhlichen Songs']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
       }
       //Wenn mehr als 3 traurige Songs in den Lieblingssongs sind dann füge sie hinzu
       if(tracksWithLowValence.length >= 3){
         colors.push('#5D5852')
         data.push(tracksWithLowValence.length)
         labels.push('Traurige Songs')
+
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        var categorieArray = ['/lowValence', lowValenceImageSmall, 'Traurige Songs', 'Deine traurigen Songs']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
       }
       //Wenn mehr als 3 instrumentale Songs in den Lieblingssongs sind dann füge sie hinzu
       if(instrumentalTracks.length >= 3){
         colors.push('#522A4C')
         data.push(instrumentalTracks.length)
         labels.push('Instrumentale Songs')
+
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        var categorieArray = ['/instrumental', instrumentalImageSmall, 'Instrumentale Songs', 'Alles im Zeichen der Instrumente']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
       }
 
-      console.log(data)
       //Setze die States für die drei verschiedenen Arrays
       setChartColors(colors)
       setChartData(data)
       setChartLabels(labels)
+
+      console.log(trackCategoriesArray)
+
+      //Setze State für die Dashboard Karten
+      setTrackCategories(trackCategoriesArray)
 
       //Nachdem das Kreisdiagramm zusammengebaut wurde sind nun alle Informationen vollständig um die Homepage zu rendern
       //Dazu wird das State readyToRender auf true gesetzt
@@ -712,7 +769,7 @@ function App() {
 
       <ThemeProvider theme={theme}>
 
-      <div style={{backgroundColor: "#f6f6f6", marginRight: "-10px", marginLeft: "-10px", marginTop: "-10px", marginBottom: "-10px"}}>
+      <div style={{backgroundColor: "#f6f6f6", marginRight: "-10px", marginLeft: "0px", marginTop: "0px", marginBottom: "-10px"}}>
         
       <Router>
         {!token ?
@@ -746,7 +803,7 @@ function App() {
 
 
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels}/>}></Route>   
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist}/>}></Route>
