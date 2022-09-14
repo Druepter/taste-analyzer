@@ -6,10 +6,21 @@ import TabletIcon from '@mui/icons-material/Tablet';
 
 
 
-export default function TrafficByDevice({chartColors, chartData, chartLabels}){
+export default function TrafficByDevice({chartColors, chartData, chartLabels, trackCategories}){
 
 //export const TrafficByDevice = (props, test) => {
   const theme = useTheme();
+
+  var dataTest = []
+  var colors = []
+  var labels = []
+
+  for(var i=0; i < trackCategories.length; i++){
+    dataTest.push(trackCategories[i][4])
+    colors.push(trackCategories[i][5])
+    labels.push(trackCategories[i][2])
+  }
+
 
   console.log(chartData)
 
@@ -18,14 +29,14 @@ export default function TrafficByDevice({chartColors, chartData, chartLabels}){
   const data = {
     datasets: [
       {
-        data: chartData,
-        backgroundColor: chartColors,
+        data: dataTest,
+        backgroundColor: colors,
         borderWidth: 8,
         borderColor: '#FFFFFF',
         hoverBorderColor: '#FFFFFF'
       }
     ],
-    labels: chartLabels
+    labels: labels
   };
 
   const options = {

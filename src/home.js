@@ -123,7 +123,7 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                             Deine Top Kategorien:
                         </Typography>
 
-                        <TrafficByDevice chartColors={chartColors} chartData={chartData} chartLabels={chartLabels}></TrafficByDevice>
+                        <TrafficByDevice chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories}></TrafficByDevice>
 
                         <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
                           In den folgenden Kacheln sind die Songs aufgeteilt in Playlisten zu sehen

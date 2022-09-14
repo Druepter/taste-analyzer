@@ -200,7 +200,8 @@ function App() {
         //Erste Position = Bild
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
-        var categorieArray = ['/acoustic', acousticImageSmall, 'Akustische Songs', 'Organische Klänge']
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/acoustic', acousticImageSmall, 'Akustische Songs', 'Organische Klänge', acousticTracks.length, '#DAB88B']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -215,7 +216,8 @@ function App() {
         //Erste Position = Bild
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
-        var categorieArray = ['/danceable', danceableImageSmall, 'Songs zum tanzen', 'Deine tanzenbaren Songs']
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/danceable', danceableImageSmall, 'Songs zum tanzen', 'Deine tanzenbaren Songs', danceableTracks.length, '#8346F9']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -230,7 +232,8 @@ function App() {
         //Erste Position = Bild
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
-        var categorieArray = ['/highValence', highValenceImageSmall, 'Fröhliche Songs', 'Hier deine fröhlichen Songs']
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/highValence', highValenceImageSmall, 'Fröhliche Songs', 'Hier deine fröhlichen Songs', tracksWithHighValence.length, '#B9E5F0']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -245,7 +248,8 @@ function App() {
         //Erste Position = Bild
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
-        var categorieArray = ['/lowValence', lowValenceImageSmall, 'Traurige Songs', 'Deine traurigen Songs']
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/lowValence', lowValenceImageSmall, 'Traurige Songs', 'Deine traurigen Songs', tracksWithLowValence.length, '#5D5852']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -260,7 +264,8 @@ function App() {
         //Erste Position = Bild
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
-        var categorieArray = ['/instrumental', instrumentalImageSmall, 'Instrumentale Songs', 'Alles im Zeichen der Instrumente']
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/instrumental', instrumentalImageSmall, 'Instrumentale Songs', 'Alles im Zeichen der Instrumente', instrumentalTracks.length, '#522A4C']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -270,6 +275,13 @@ function App() {
       setChartData(data)
       setChartLabels(labels)
 
+
+      console.log(trackCategoriesArray)
+      //trackCategoreisArray nach Anzahl der Songs in jeder Kategorie sortieren
+      trackCategoriesArray.sort(function(a, b){
+        return a[4] - b[4]
+      })
+      trackCategoriesArray.reverse()
       console.log(trackCategoriesArray)
 
       //Setze State für die Dashboard Karten
