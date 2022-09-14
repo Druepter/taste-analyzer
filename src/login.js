@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 export default function Login({_AUTH_ENDPOINT, _CLIENT_ID, _REDIRECT_URI, _RESPONSE_TYPE, _scope}) {
   return (
     <>
-      <Container sx={{boxShadow: 1}}style={{backgroundColor: "white", paddingTop: 6}} maxWidth="md">
+      <Container sx={{boxShadow: 1, minHeight: "101vh"}}style={{backgroundColor: "white", paddingTop: 6}} maxWidth="md">
 
         {/* Header Bild */}
         <ImageList cols={1} sx={{marginLeft: "-24px", marginRight: "-24px", marginTop: "-10px"}}>
