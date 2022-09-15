@@ -12,10 +12,11 @@ import Box from "@mui/material/Box";
 export default function Login({_AUTH_ENDPOINT, _CLIENT_ID, _REDIRECT_URI, _RESPONSE_TYPE, _scope}) {
   return (
     <>
-      <Container sx={{boxShadow: 1, minHeight: "101vh"}}style={{backgroundColor: "white", paddingTop: 6}} maxWidth="md">
+      <Container sx={{boxShadow: 1, minHeight: "101vh"}} style={{backgroundColor: "white", padding: 0}} maxWidth="md">
 
+      <Container sx={{boxShadow: 1}} style={{padding: 0}} maxWidth="md">
         {/* Header Bild */}
-        <ImageList cols={1} sx={{marginLeft: "-24px", marginRight: "-24px", marginTop: "-10px"}}>
+        <ImageList cols={1} sx={{marginLeft: "0px", marginRight: "0px", marginTop: "-10px"}}>
             <ImageListItem>
                 <img
                     src={`${spotifyImage}?w=500&fit=crop&auto=format`}
@@ -26,8 +27,12 @@ export default function Login({_AUTH_ENDPOINT, _CLIENT_ID, _REDIRECT_URI, _RESPO
                 />
             </ImageListItem>                
         </ImageList>
-        
-        <Typography variant="h3" sx={{mb: 2, mt: 4, fontWeight: 550}}>
+      </Container>
+
+
+      <Container sx={{minHeight: "100%"}} style={{backgroundColor: "white", paddingTop: 0, marginTop: '-16px'}} maxWidth="md">
+       
+        <Typography variant="h3" sx={{mb: 2, pt: 4, fontWeight: 550}}>
             Spotify Taste Analyzer
         </Typography>
         <Typography sx={{mb: 2, mt: 3, fontSize: 15}}>
@@ -54,6 +59,7 @@ export default function Login({_AUTH_ENDPOINT, _CLIENT_ID, _REDIRECT_URI, _RESPO
               {/* Button zum Login bei Spotify, als Query werden die Parameter der Funktion verwendet */}
               <Button variant="contained" href={`${_AUTH_ENDPOINT}?client_id=${_CLIENT_ID}&redirect_uri=${_REDIRECT_URI}&response_type=${_RESPONSE_TYPE}&scope=${_scope}`}>Mit Spotify einloggen</Button>
         </Box>             
+      </Container>
       </Container>
     </>         
   )

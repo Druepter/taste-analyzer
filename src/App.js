@@ -781,7 +781,7 @@ function App() {
 
       <ThemeProvider theme={theme}>
 
-      <div style={{backgroundColor: "#f6f6f6", marginRight: "-10px", marginLeft: "0px", marginTop: "0px", marginBottom: "-10px"}}>
+      <div style={{backgroundColor: "#f6f6f6"}}>
         
       <Router>
         {!token ?
