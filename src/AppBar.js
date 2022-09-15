@@ -41,27 +41,31 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 
-export default function HideAppBar({props, logout}) {
+export default function HideAppBar({props, logout, path}) {
   return (
     <React.Fragment>
       <CssBaseline />
       <HideOnScroll {...props}>
         <AppBar>
           <Toolbar>
-            <IconButton
-            component={RouterLink} to="/home"
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-        >
+            {path != 'home' ?
+              <IconButton
+                component={RouterLink} to="/home"
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+              >
             <ArrowBackIcon />
         </IconButton>
+                    :
+                    <></>
+                    }
             
 
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Taste Analyzer
+              Spotify Taste Analyzer
             </Typography>
             <Button onClick={logout} color="inherit">LOGOUT</Button>
           </Toolbar>

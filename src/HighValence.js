@@ -5,7 +5,12 @@ import Container from '@mui/material/Container';
 import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 import highValenceImage from "./assets/gluecklich_mittel.jpg"
 
-export default function HighValence({tracksWithHighValence, createPlaylist}){
+export default function HighValence({tracksWithHighValence, createPlaylist, renderState}){
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      renderState('highValence')
+    }, [])
 
     return (
         <>

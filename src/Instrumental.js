@@ -5,7 +5,12 @@ import Container from '@mui/material/Container';
 import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 import instrumentalImage from "./assets/instrumental_mittel.jpg"
 
-export default function Instrumental({instrumentalTracks, createPlaylist}){
+export default function Instrumental({instrumentalTracks, createPlaylist, renderState}){
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      renderState('instrumental')
+    }, [])
 
     return (
         <>

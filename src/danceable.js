@@ -6,8 +6,12 @@ import danceableImageSmall from "./assets/tanzbar_klein.jpg"
 import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 
 
-export default function Danceable({danceableTracks, createPlaylist}){
+export default function Danceable({danceableTracks, createPlaylist, renderState}){
 
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      renderState('danceable')
+    }, [])
 
     return (
         <>

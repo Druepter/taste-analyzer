@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef} from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -33,6 +33,7 @@ import lowValenceImageSmall from "./assets/traurig_klein.jpg"
 import highValenceImageSmall from "./assets/gluecklich_klein.jpg";
 import acousticImageSmall from "./assets/akustik_klein.jpg";
 import instrumentalImageSmall from "./assets/instrumental_klein.jpg";
+import { CollectionsBookmarkRounded } from "@mui/icons-material";
 
 
 function App() {
@@ -105,6 +106,11 @@ function App() {
 
   const [trackCategories, setTrackCategories] = useState()
 
+  const [renderState, setRenderState] = useState('home')
+
+
+
+
   var favoriteTracksArrayShortTerm
   var favoriteTracksArrayMediumTerm
   var favoriteTracksArrayLongTerm
@@ -112,7 +118,9 @@ function App() {
 
   var scope = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private';
 
-
+  useEffect(() => {
+    console.log("RenderState wurde geändert")
+  }, [renderState])
 
   useEffect(() => {
     const hash = window.location.hash
@@ -786,12 +794,13 @@ function App() {
       <Router>
         {!token ?
           <>
-
-          <Login _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}></Login>
+            <Login _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}></Login>
           </>
 
         : 
-          <><HideAppBar logout={logout}></HideAppBar></>
+          <>    
+            <HideAppBar logout={logout} path={renderState}></HideAppBar>
+          </>
         
         }
         {/*{token ?
@@ -815,12 +824,12 @@ function App() {
 
 
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories}/>}></Route>   
-          <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist}/>}></Route> 
-          <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist}/>}></Route> 
-          <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist}/>}></Route>
-          <Route path="/acoustic" element={<Acoustic acousticTracks={acousticTracks} createPlaylist={createPlaylist}/>}></Route>
-          <Route path="/instrumental" element={<Instrumental instrumentalTracks={instrumentalTracks} createPlaylist={createPlaylist}/>}></Route>          
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState}/>}></Route>   
+          <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
+          <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
+          <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
+          <Route path="/acoustic" element={<Acoustic acousticTracks={acousticTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
+          <Route path="/instrumental" element={<Instrumental instrumentalTracks={instrumentalTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>          
         </Routes> 
 
 

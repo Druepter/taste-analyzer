@@ -60,7 +60,7 @@ function generate(element) {
 
 
 
-export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token, readyToRender, chartColors, chartData, chartLabels, trackCategories}){
+export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavoriteTracksAudioFeaturesMediumTerm, getFavoriteTracksAudioFeaturesLongTerm, getCurrentUsersProfile, token, readyToRender, chartColors, chartData, chartLabels, trackCategories, renderState}){
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
 
@@ -74,7 +74,7 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
 
             //concatFavoriteTracks()
             //getAudioFeatures()
-        
+            renderState('home')
 
     }, [])
 
@@ -107,10 +107,12 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                       <>
                       <Container sx={{boxShadow: 1}} style={{backgroundColor: "white", paddingTop: 6}} maxWidth="md">
                         <Typography variant="h3" sx={{mb: 2, mt: 4, fontWeight: 550}}>
-                            Herzlich Willkommen beim Spotify Taste Analyzer
+                            Herzlich Willkommen
                         </Typography>
 
                         <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
+                          Du bracuhst eine Playlist bestehend aus deinen Lieblingssongs für eine bestimmte Stimmung?
+                          Nach Eigenschaften sortiert
                           Wir haben deine Lieblingssongs erfolgreich analysiert und daraus ein Profil
                           für deinen Musikgeschmack erstellt. Dazu haben wir deine meinstgespielten Tracks
                           nach verschiedenen Kriterien kategorisiert. In dem nun folgenden Kreisdiagramm
@@ -138,20 +140,12 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
               </>
             :
             <>
-                            <Container sx={{boxShadow: 1}} style={{backgroundColor: "white", paddingTop: 1}} maxWidth="md">
-                <Grid container sapcing={0} align="center" justify="center" direction="column">
+              <Container sx={{boxShadow: 1}} style={{backgroundColor: "white", paddingTop: 1}} maxWidth="md">
+                <Grid container sapcing={0}  style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh',}}>
                   <Grid item>
-                    <CircularProgress />
+                    <CircularProgress size="10rem" />
                   </Grid>
-
-
                 </Grid>
-                
-                
-                {/*<Box sx={{display: 'flex', margin: 'auto', alignItems: 'center', justifyContent: 'center'}}>
-                  <CircularProgress />
-        </Box>*/}
-
               </Container>
             </>
 

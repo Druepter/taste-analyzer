@@ -5,7 +5,12 @@ import Container from '@mui/material/Container';
 import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 import lowValenceImage from "./assets/traurig_mittel.jpg"
 
-export default function LowValence({tracksWithLowValence, createPlaylist}){
+export default function LowValence({tracksWithLowValence, createPlaylist, renderState}){
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      renderState('lowValence')
+    }, [])  
 
     return (
         <>
