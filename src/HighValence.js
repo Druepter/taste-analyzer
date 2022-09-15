@@ -9,18 +9,18 @@ export default function HighValence({tracksWithHighValence, createPlaylist}){
 
     return (
         <>
-          <Container sx={{boxShadow: 1}} style={{backgroundColor: "white"}} maxWidth="md">
+          <Container sx={{boxShadow: 1}}style={{backgroundColor: "white", padding: 0}} maxWidth="md">
 
-          <CategoryPageHeader
-            title='Fröhliche Songs'
-            image={highValenceImage}
-            description='Positive Energie'>         
-          </CategoryPageHeader>
-          <TrackList tracks={tracksWithHighValence}></TrackList>
+            <CategoryPageHeader
+              title='Fröhliche Songs'
+              image={highValenceImage}
+              description='Positive Energie'>         
+            </CategoryPageHeader>
 
-
-          <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Fröhliche Songs" tracks={tracksWithHighValence}></ButtonCreatePlaylist>
-
+            <Container style={{backgroundColor: "white"}} maxWidth="md">
+              <TrackList tracks={tracksWithHighValence}></TrackList>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Fröhliche Songs" tracks={tracksWithHighValence}></ButtonCreatePlaylist>
+            </Container>
 
           </Container>
         </>

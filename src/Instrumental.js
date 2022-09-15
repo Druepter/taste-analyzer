@@ -9,18 +9,18 @@ export default function Instrumental({instrumentalTracks, createPlaylist}){
 
     return (
         <>
-          <Container sx={{boxShadow: 1}} style={{backgroundColor: "white"}} maxWidth="md">
+          <Container sx={{boxShadow: 1}}style={{backgroundColor: "white", padding: 0}} maxWidth="md">
+         
+            <CategoryPageHeader
+              title='Instrumentale Songs'
+              image={instrumentalImage}
+              description='Songs nur aus Instrumenten'>         
+            </CategoryPageHeader>
 
-          <CategoryPageHeader
-            title='Instrumentale Songs'
-            image={instrumentalImage}
-            description='Songs nur aus Instrumenten'>         
-          </CategoryPageHeader>
-          <TrackList tracks={instrumentalTracks}></TrackList>
-
-
-          <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Instrumentale Songs" tracks={instrumentalTracks}></ButtonCreatePlaylist>
-
+            <Container style={{backgroundColor: "white"}} maxWidth="md">
+              <TrackList tracks={instrumentalTracks}></TrackList>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Instrumentale Songs" tracks={instrumentalTracks}></ButtonCreatePlaylist>
+            </Container>
 
           </Container>
         </>

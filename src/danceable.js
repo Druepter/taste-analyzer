@@ -11,19 +11,20 @@ export default function Danceable({danceableTracks, createPlaylist}){
 
     return (
         <>
-          <Container sx={{boxShadow: 1}}style={{backgroundColor: "white"}} maxWidth="md">
+          <Container sx={{boxShadow: 1}}style={{backgroundColor: "white", padding: 0}} maxWidth="md">
+              <CategoryPageHeader
+                title='Deine Tanzbaren Songs'
+                image={danceableImageSmall}
+                description='In deinen Lieblingssongs finden sich einige Lieder zu denen sich super das Tanzbein schwingen lässt:'>         
+              </CategoryPageHeader>
+          
+            <Container style={{backgroundColor: "white"}} maxWidth="md">
+              <TrackList tracks={danceableTracks}></TrackList>
+              
 
-            <CategoryPageHeader
-              title='Deine Tanzbaren Songs'
-              image={danceableImageSmall}
-              description='In deinen Lieblingssongs finden sich einige Lieder zu denen sich super das Tanzbein schwingen lässt:'>         
-            </CategoryPageHeader>
-            <TrackList tracks={danceableTracks}></TrackList>
-            
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Tanzbare Songs" tracks={danceableTracks}></ButtonCreatePlaylist>
 
-            <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Tanzbare Songs" tracks={danceableTracks}></ButtonCreatePlaylist>
-
-
+            </Container>
           </Container>
         </>
     )}

@@ -9,19 +9,19 @@ export default function Acosutic({acousticTracks, createPlaylist}){
 
     return (
         <>
-          <Container sx={{boxShadow: 1}} style={{backgroundColor: "white"}} maxWidth="md">
+          <Container sx={{boxShadow: 1}}style={{backgroundColor: "white", padding: 0}} maxWidth="md">
 
-          <CategoryPageHeader
-            title='Akustische Songs'
-            image={acousticImage}
-            description='Organische Instrumente'>         
-          </CategoryPageHeader>
-          <TrackList tracks={acousticTracks}></TrackList>
+            <CategoryPageHeader
+              title='Akustische Songs'
+              image={acousticImage}
+              description='Organische Instrumente'>         
+            </CategoryPageHeader>
 
-
-          <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Akustische Songs" tracks={acousticTracks}></ButtonCreatePlaylist>
-
-
+            <Container style={{backgroundColor: "white"}} maxWidth="md">
+              <TrackList tracks={acousticTracks}></TrackList>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Akustische Songs" tracks={acousticTracks}></ButtonCreatePlaylist>
+            </Container>
+            
           </Container>
         </>
     )}
