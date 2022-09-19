@@ -3,6 +3,7 @@ import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } fro
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import PhoneIcon from '@mui/icons-material/Phone';
 import TabletIcon from '@mui/icons-material/Tablet';
+import {useNavigate} from 'react-router-dom';
 
 
 
@@ -34,7 +35,17 @@ export default function PieChart({chartColors, chartData, chartLabels, trackCate
     labels: labels
   };
 
+  const navigate = useNavigate();
+
   const options = {
+    onClick: (e, elements) => {
+      //Wenn auf ein Element im PieChart geklickt wird dann gehe auf die dazugehörige Seite
+      //Dazu nutze navigate Funktion des react router doms
+      //und den Link aus den trackCategoreis
+      //Nullte Stelle ist der Link
+      navigate(trackCategories[elements[0].element.$context.dataIndex][0], {replace: true})
+
+    },
     animation: false,
     cutoutPercentage: 80,
     layout: { padding: 0 },
@@ -43,7 +54,7 @@ export default function PieChart({chartColors, chartData, chartLabels, trackCate
     },
     maintainAspectRatio: false,
     responsive: true,
-    tooltips: {
+    /*tooltips: {
       backgroundColor: theme.palette.background.paper,
       bodyFontColor: theme.palette.text.secondary,
       borderColor: theme.palette.divider,
@@ -53,8 +64,9 @@ export default function PieChart({chartColors, chartData, chartLabels, trackCate
       intersect: false,
       mode: 'index',
       titleFontColor: theme.palette.text.primary
-    }
+    }*/
   };
+
 
   const devices = [
     {
