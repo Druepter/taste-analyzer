@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Alert from '@mui/material/Alert';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -27,13 +22,22 @@ import LowValence from "./LowValence";
 import HighValence from "./HighValence";
 import Acoustic from "./Acoustic";
 import Instrumental from "./Instrumental";
+import Live from "./Live";
+
 
 import danceableImageSmall from "./assets/tanzbar_klein.jpg"
 import lowValenceImageSmall from "./assets/traurig_klein.jpg"
 import highValenceImageSmall from "./assets/gluecklich_klein.jpg";
 import acousticImageSmall from "./assets/akustik_klein.jpg";
 import instrumentalImageSmall from "./assets/instrumental_klein.jpg";
+import liveImageSmall from "./assets/live_klein.jpg";
+import highEnergyImageSmall from "./assets/energetisch_klein.jpg";
+import lowEnergyImageSmall from "./assets/ruhig_klein.jpg";
+
+
 import { CollectionsBookmarkRounded } from "@mui/icons-material";
+import HighEnergy from "./HighEnergy";
+import LowEnergy from "./LowEnergy";
 
 
 function App() {
@@ -83,29 +87,34 @@ function App() {
   const [readyToRender, setReadyToRender] = useState(false)
   const [readyToBuildChart, setReadyToBuildChart] = useState(false)
 
-
+  //Arrays und States für einzelne Song Kategorien
   const [danceableTracks, setDanceableTracks] = useState();
   const danceableTracksArray = []
-
   const [tracksWithLowValence, setTracksWithLowValence] = useState()
   const tracksWithLowValenceArray = []
-
   const [tracksWithHighValence, setTracksWithHighValence] = useState()
   const tracksWithHighValenceArray = []
-
   const [acousticTracks, setAcousticTracks] = useState();
   const acousticTracksArray = []
-
   const [instrumentalTracks, setInstrumentalTracks] = useState();
   const instrumentalTracksArray = []
+  const [liveTracks, setLiveTracks] = useState()
+  const liveTracksArray = []
+  const [tracksWithHighEnergy, setTracksWithHighEnergy] = useState()
+  const tracksWithHighEnergyArray = []
+  const [tracksWithLowEnergy, setTracksWithLowEnergy] = useState()
+  const tracksWithLowEnergyArray = [] 
 
-
+  //States für das Kreisdigramm auf der Homepage
   const [chartColors, setChartColors] = useState()
   const [chartData, setChartData] = useState()
   const [chartLabels, setChartLabels] = useState()
 
+  //Dieser State speichert Informationen über die einzelnen Songs Kategorien für die Homepage
   const [trackCategories, setTrackCategories] = useState()
 
+  //State für die AppBar
+  //Gibt an auf welcher Seite sich die Anwendung gerade befindet
   const [renderState, setRenderState] = useState('home')
 
 
@@ -170,7 +179,9 @@ function App() {
       getTracksWithHighValence()
       getTracksAcoustic()
       getInstrumentalTracks()
-
+      getLiveTracks()
+      getTracksWithHighEnergy()
+      getTracksWithLowEnergy()
 
 
       //Nachdem alle Tracks zusammengebaut wurden, wird der State readyToBuildChart auf true gesetzt
@@ -225,7 +236,7 @@ function App() {
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
         //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
-        var categorieArray = ['/danceable', danceableImageSmall, 'Songs zum tanzen', 'Deine tanzenbaren Songs', danceableTracks.length, '#8346F9']
+        var categorieArray = ['/danceable', danceableImageSmall, 'Songs zum tanzen', 'Rauf die Tanzfläche', danceableTracks.length, '#8346F9']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -277,7 +288,54 @@ function App() {
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
+      //Wenn mehr als 3 live Songs in den Lieblingssongs sind dann füge sie hinzu
+      if(liveTracks.length >= 3){
+        colors.push('#EDA543')
+        data.push(liveTracks.length)
+        labels.push('Live Songs')
 
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/live', liveImageSmall, 'Live Songs', 'Feeling wie auf einem Konzert', liveTracks.length, '#EDA543']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
+      }
+      //Wenn mehr als 3 Songs mit hoher Energie in den Lieblingssongs sind dann füge sie hinzu
+      if(tracksWithHighEnergy.length >= 3){
+        colors.push('#CCD691')
+        data.push(tracksWithHighEnergy.length)
+        labels.push('Energetische Songs')
+
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/highEnergy', highEnergyImageSmall, 'Energetische Songs', 'Power', tracksWithHighEnergy.length, '#CCD691']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
+      }
+      //Wenn mehr als 3 Songs mit niedriger Energie in den Lieblingssongs sind dann füge sie hinzu
+      if(tracksWithLowEnergy.length >= 3){
+        colors.push('#E2CBC3')
+        data.push(tracksWithLowEnergy.length)
+        labels.push('Ruhige Songs')
+
+        //Setze dass Kategorie als Dashboard Karte angezeigt werden soll
+        //Nullte Position = link
+        //Erste Position = Bild
+        //Zweite Position = Titel
+        //Dritte Position = Beschreibung
+        //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
+        var categorieArray = ['/lowEnergy', lowEnergyImageSmall, 'Ruhige Songs', 'Entspannung pur', tracksWithLowEnergy.length, '#E2CBC3']
+        //Akustik Array dem overall Array hinzufügen
+        trackCategoriesArray.push(categorieArray)
+      }
       //Setze die States für die drei verschiedenen Arrays
       setChartColors(colors)
       setChartData(data)
@@ -730,8 +788,128 @@ function App() {
     }
     //setze state
     setInstrumentalTracks(instrumentalTracksArray)
-    console.log(instrumentalTracksArray)
   }
+
+  const getLiveTracks = () => {
+    //Iteriere über Audio Features Array
+    //Wenn liveness über 0.8 ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
+
+
+    //Interiere über alle AudioFeatures von allen Tracks
+    for(var i=0; i < allAudioFeatures.length; i++){
+
+      var trackName = ""
+
+      //Wenn ein Tracks mehr livness als 0.8 hat dann suche den Namen
+      //Der Name ist nicht im Audio Featrues Array. Deshalb muss über das favorite Song Array iteriert werden um den Namen zu bekommen
+      if(allAudioFeatures[i].liveness > 0.8){
+        for(var j=0; j < allFavoriteTracks.length; j++){
+          if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
+            trackName = allFavoriteTracks[j].name
+          }
+        }
+      //Hier werden die Informationen zu den Tracks zusammengestellt welche gebraucht werden  
+      //Daraus wird im Anschluss ein neues Array gebildet, welches nur die Tracks mit liveness über 0.8 enthalten
+      const trackInformation = []
+      //ID des Tracks
+      trackInformation.push(allAudioFeatures[i].id)
+      //Name des Tracks
+      trackInformation.push(trackName)
+      //Artist des Tracks
+      trackInformation.push(allFavoriteTracks[i].artists)
+      //Cover des Tracks
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
+        
+      //Füge diese Informationen ins Array
+      liveTracksArray.push(trackInformation)
+      }
+      
+    }
+    //setze state
+    setLiveTracks(liveTracksArray)
+  }
+
+  const getTracksWithHighEnergy = () => {
+    //Iteriere über Audio Features Array
+    //Wenn energy über 0.8 ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
+
+
+    //Interiere über alle AudioFeatures von allen Tracks
+    for(var i=0; i < allAudioFeatures.length; i++){
+
+      var trackName = ""
+
+      //Wenn ein Tracks mehr engery als 0.8 hat dann suche den Namen
+      //Der Name ist nicht im Audio Featrues Array. Deshalb muss über das favorite Song Array iteriert werden um den Namen zu bekommen
+      if(allAudioFeatures[i].energy > 0.8){
+        for(var j=0; j < allFavoriteTracks.length; j++){
+          if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
+            trackName = allFavoriteTracks[j].name
+          }
+        }
+      //Hier werden die Informationen zu den Tracks zusammengestellt welche gebraucht werden  
+      //Daraus wird im Anschluss ein neues Array gebildet, welches nur die Tracks mit energy über 0.8 enthalten
+      const trackInformation = []
+      //ID des Tracks
+      trackInformation.push(allAudioFeatures[i].id)
+      //Name des Tracks
+      trackInformation.push(trackName)
+      //Artist des Tracks
+      trackInformation.push(allFavoriteTracks[i].artists)
+      //Cover des Tracks
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
+        
+      //Füge diese Informationen ins Array
+      tracksWithHighEnergyArray.push(trackInformation)
+      }
+      
+    }
+    //setze state
+    setTracksWithHighEnergy(tracksWithHighEnergyArray)
+  }
+
+  const getTracksWithLowEnergy = () => {
+    //Iteriere über Audio Features Array
+    //Wenn energy unter 0.3 ist in neue Liste schreiben
+    //Hole dir Songnamen anhand von id aus favertie Tracks Array
+
+
+    //Interiere über alle AudioFeatures von allen Tracks
+    for(var i=0; i < allAudioFeatures.length; i++){
+
+      var trackName = ""
+
+      //Wenn ein Tracks weniger engery als 0.3 hat dann suche den Namen
+      //Der Name ist nicht im Audio Featrues Array. Deshalb muss über das favorite Song Array iteriert werden um den Namen zu bekommen
+      if(allAudioFeatures[i].energy < 0.4){
+        for(var j=0; j < allFavoriteTracks.length; j++){
+          if(allAudioFeatures[i].id == allFavoriteTracks[j].id){
+            trackName = allFavoriteTracks[j].name
+          }
+        }
+      //Hier werden die Informationen zu den Tracks zusammengestellt welche gebraucht werden  
+      //Daraus wird im Anschluss ein neues Array gebildet, welches nur die Tracks mit energy über 0.8 enthalten
+      const trackInformation = []
+      //ID des Tracks
+      trackInformation.push(allAudioFeatures[i].id)
+      //Name des Tracks
+      trackInformation.push(trackName)
+      //Artist des Tracks
+      trackInformation.push(allFavoriteTracks[i].artists)
+      //Cover des Tracks
+      trackInformation.push(allFavoriteTracks[i].album.images[0])
+        
+      //Füge diese Informationen ins Array
+      tracksWithLowEnergyArray.push(trackInformation)
+      }
+      
+    }
+    //setze state
+    setTracksWithLowEnergy(tracksWithLowEnergyArray)
+  }
+
 
 
   const createPlaylist = (name, tracks) => {
@@ -829,7 +1007,10 @@ function App() {
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
           <Route path="/acoustic" element={<Acoustic acousticTracks={acousticTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
-          <Route path="/instrumental" element={<Instrumental instrumentalTracks={instrumentalTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>          
+          <Route path="/instrumental" element={<Instrumental instrumentalTracks={instrumentalTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
+          <Route path="/live" element={<Live liveTracks={liveTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
+          <Route path="/highEnergy" element={<HighEnergy tracksWithHighEnergy={tracksWithHighEnergy} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
+          <Route path="/lowEnergy" element={<LowEnergy tracksWithLowEnergy={tracksWithLowEnergy} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>               
         </Routes> 
 
 
