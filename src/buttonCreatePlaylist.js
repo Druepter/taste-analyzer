@@ -2,10 +2,10 @@ import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
 
 
-export default function ButtonCreatePlaylist({createPlaylist, tracks, title}){
+export default function ButtonCreatePlaylist({createPlaylist, tracks, title, description}){
 
     const handleCreatePlaylistClick = () =>{
-        createPlaylist(title, tracks)
+        createPlaylist(title, tracks, description)
       }
 
     return(

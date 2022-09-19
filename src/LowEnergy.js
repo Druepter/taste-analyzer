@@ -19,12 +19,12 @@ export default function LowEnergy({tracksWithLowEnergy, createPlaylist, renderSt
             <CategoryPageHeader
               title='Ruhige Songs'
               image={lowEnergyImage}
-              description='Entspannung pur'>         
+              description='Für entspannte Momente'>         
             </CategoryPageHeader>
 
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={tracksWithLowEnergy}></TrackList>
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Ruhige Songs" tracks={tracksWithLowEnergy}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Ruhige Songs" description="Für entspannte Momente" tracks={tracksWithLowEnergy}></ButtonCreatePlaylist>
             </Container>
 
           </Container>

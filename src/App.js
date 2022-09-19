@@ -233,7 +233,7 @@ function App() {
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
         //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
-        var categorieArray = ['/danceable', danceableImageSmall, 'Songs zum tanzen', 'Rauf die Tanzfläche', danceableTracks.length, '#8346F9']
+        var categorieArray = ['/danceable', danceableImageSmall, 'Tanzbare Songs', 'Rauf auf die Tanzfläche', danceableTracks.length, '#8346F9']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -249,7 +249,7 @@ function App() {
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
         //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
-        var categorieArray = ['/highValence', highValenceImageSmall, 'Fröhliche Songs', 'Hier deine fröhlichen Songs', tracksWithHighValence.length, '#B9E5F0']
+        var categorieArray = ['/highValence', highValenceImageSmall, 'Fröhliche Songs', 'Für die glücklichsten Augenblicke', tracksWithHighValence.length, '#B9E5F0']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -265,7 +265,7 @@ function App() {
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
         //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
-        var categorieArray = ['/lowValence', lowValenceImageSmall, 'Traurige Songs', 'Deine traurigen Songs', tracksWithLowValence.length, '#5D5852']
+        var categorieArray = ['/lowValence', lowValenceImageSmall, 'Traurige Songs', 'Alles wird gut', tracksWithLowValence.length, '#5D5852']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -286,7 +286,7 @@ function App() {
         trackCategoriesArray.push(categorieArray)
       }
       //Wenn mehr als 3 live Songs in den Lieblingssongs sind dann füge sie hinzu
-      if(liveTracks.length >= 3){
+      if(liveTracks.length >= 2){
         colors.push('#EDA543')
         data.push(liveTracks.length)
         labels.push('Live Songs')
@@ -297,7 +297,7 @@ function App() {
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
         //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
-        var categorieArray = ['/live', liveImageSmall, 'Live Songs', 'Feeling wie auf einem Konzert', liveTracks.length, '#EDA543']
+        var categorieArray = ['/live', liveImageSmall, 'Live Songs', 'Gefühle wie auf einem Konzert', liveTracks.length, '#EDA543']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -313,7 +313,7 @@ function App() {
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
         //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
-        var categorieArray = ['/highEnergy', highEnergyImageSmall, 'Energetische Songs', 'Power', tracksWithHighEnergy.length, '#CCD691']
+        var categorieArray = ['/highEnergy', highEnergyImageSmall, 'Energetische Songs', '100% Power', tracksWithHighEnergy.length, '#CCD691']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -329,7 +329,7 @@ function App() {
         //Zweite Position = Titel
         //Dritte Position = Beschreibung
         //Vierte Position = Anzahl der Tracks in Kategorie, dies wird für die Reihenfolge der Dashbaord Karten gebraucht
-        var categorieArray = ['/lowEnergy', lowEnergyImageSmall, 'Ruhige Songs', 'Entspannung pur', tracksWithLowEnergy.length, '#E2CBC3']
+        var categorieArray = ['/lowEnergy', lowEnergyImageSmall, 'Ruhige Songs', 'Für entspannte Momente', tracksWithLowEnergy.length, '#E2CBC3']
         //Akustik Array dem overall Array hinzufügen
         trackCategoriesArray.push(categorieArray)
       }
@@ -905,14 +905,15 @@ function App() {
   /////////  PLAYLIST FUNKTIONEN ///////////
 
   //erstelle Playliste
-  const createPlaylist = (name, tracks) => {
+  const createPlaylist = (name, tracks, description) => {
 
     //Token aus lokal storage holen
     var localStorageToken = window.localStorage.getItem('token')
 
     //Hier noch den Namen dynamisch einbinden
     axios.post('https://api.spotify.com/v1/users/' + currentUsersProfile.display_name + '/playlists', {
-      name: name
+      name: name,
+      description: description
     }, {
       headers: {
         'Authorization': `Bearer ${localStorageToken}`

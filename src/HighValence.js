@@ -19,12 +19,12 @@ export default function HighValence({tracksWithHighValence, createPlaylist, rend
             <CategoryPageHeader
               title='Fröhliche Songs'
               image={highValenceImage}
-              description='Positive Energie'>         
+              description='Für die glücklichsten Augenblicke'>         
             </CategoryPageHeader>
 
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={tracksWithHighValence}></TrackList>
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Fröhliche Songs" tracks={tracksWithHighValence}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Fröhliche Songs" description="Für die glücklichsten Augenblicke" tracks={tracksWithHighValence}></ButtonCreatePlaylist>
             </Container>
 
           </Container>

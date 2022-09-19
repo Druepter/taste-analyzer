@@ -51,12 +51,12 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                         <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
                           Wir haben erfolgreich analysiert welche Merkmale deine Lieblingssongs am besten beschreiben!
                           Dazu haben wir uns deine meistgehörten Songs der letzten vier Wochen, der letzten sechs Monate und 
-                          der vergangenen Jahre seit dem du auf Spotify aktiv bist angeschaut und diese nach verschiedenen
+                          der vergangenen Jahre, seit dem du auf Spotify aktiv bist, angeschaut und diese nach verschiedenen
                           Eigenschaften kategorisiert.
                         </Typography>
 
                         <Typography variant="h4" sx={{mb: 2, mt: 4, fontWeight: 550, fontSize: 30}}>
-                            Deine Top Kategorien:
+                            Deine Top-Kategorien:
                         </Typography>
 
                         <PieChart chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories}></PieChart>
@@ -66,8 +66,8 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                         </Typography>
 
                         <Typography sx={{mb: 2, mt: 2, fontSize: 15}}>
-                          Hier findest du von uns erstellte Paylisten zu deinen Top Kategorien. Tipp: Wenn du auf einer der Kategorie-Seiten
-                          nach ganz unten scrollst findest du einen Button mit welchem du die Playlist in dein Spotify-Profil übertragen kannst!
+                          Hier findest du von uns erstellte Paylisten zu deinen Top-Kategorien. Tipp: Wenn du auf einer der Kategorieseiten
+                          nach ganz unten scrollst findest du einen Button, mit welchem du die Playlist in dein Spotify-Profil übertragen kannst!
                         </Typography>
                         
                         <Grid container spacing={2}>

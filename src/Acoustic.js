@@ -19,12 +19,12 @@ export default function Acosutic({acousticTracks, createPlaylist, renderState}){
             <CategoryPageHeader
               title='Akustische Songs'
               image={acousticImage}
-              description='Organische Instrumente'>         
+              description='Organische Klänge'>         
             </CategoryPageHeader>
 
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={acousticTracks}></TrackList>
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Akustische Songs" tracks={acousticTracks}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Akustische Songs" description="Organische Klänge" tracks={acousticTracks}></ButtonCreatePlaylist>
             </Container>
             
           </Container>

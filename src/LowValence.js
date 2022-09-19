@@ -19,12 +19,12 @@ export default function LowValence({tracksWithLowValence, createPlaylist, render
             <CategoryPageHeader
               title='Traurige Songs'
               image={lowValenceImage}
-              description='Auch traurige Songs gehören zu deinem Repertoire'>         
+              description='Alles wird gut'>         
             </CategoryPageHeader>
 
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={tracksWithLowValence}></TrackList>
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Traurige Songs" tracks={tracksWithLowValence}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Traurige Songs" description="Alles wird gut" tracks={tracksWithLowValence}></ButtonCreatePlaylist>
             </Container>
 
           </Container>

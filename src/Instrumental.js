@@ -19,12 +19,12 @@ export default function Instrumental({instrumentalTracks, createPlaylist, render
             <CategoryPageHeader
               title='Instrumentale Songs'
               image={instrumentalImage}
-              description='Songs nur aus Instrumenten'>         
+              description='Alles im Zeichen der Instrumente'>         
             </CategoryPageHeader>
 
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={instrumentalTracks}></TrackList>
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Instrumentale Songs" tracks={instrumentalTracks}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Instrumentale Songs" description="Alles im Zeichen der Instrumente" tracks={instrumentalTracks}></ButtonCreatePlaylist>
             </Container>
 
           </Container>

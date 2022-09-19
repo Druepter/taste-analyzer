@@ -19,12 +19,12 @@ export default function HighEnergy({tracksWithHighEnergy, createPlaylist, render
             <CategoryPageHeader
               title='Engergetische Songs'
               image={highEnergyImage}
-              description='Viel Energie'>         
+              description='100% Power'>         
             </CategoryPageHeader>
 
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={tracksWithHighEnergy}></TrackList>
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Engergetische Songs" tracks={tracksWithHighEnergy}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Engergetische Songs" description="100% Power" tracks={tracksWithHighEnergy}></ButtonCreatePlaylist>
             </Container>
 
           </Container>

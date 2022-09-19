@@ -20,12 +20,12 @@ export default function Live({liveTracks, createPlaylist, renderState}){
             <CategoryPageHeader
               title='Live Songs'
               image={liveImage}
-              description='Wie auf einem Konzert'>         
+              description='Gefühle wie auf einem Konzert'>         
             </CategoryPageHeader>
 
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={liveTracks}></TrackList>
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Live Songs" tracks={liveTracks}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Live Songs" description="Gefühle wie auf einem Konzert" tracks={liveTracks}></ButtonCreatePlaylist>
             </Container>
 
           </Container>

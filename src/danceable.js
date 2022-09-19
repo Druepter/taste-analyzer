@@ -19,14 +19,14 @@ export default function Danceable({danceableTracks, createPlaylist, renderState}
               <CategoryPageHeader
                 title='Deine Tanzbaren Songs'
                 image={danceableImageSmall}
-                description='In deinen Lieblingssongs finden sich einige Lieder zu denen sich super das Tanzbein schwingen lässt:'>         
+                description='Rauf auf die Tanzfläche'>         
               </CategoryPageHeader>
           
             <Container style={{backgroundColor: "white"}} maxWidth="md">
               <TrackList tracks={danceableTracks}></TrackList>
               
 
-              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Tanzbare Songs" tracks={danceableTracks}></ButtonCreatePlaylist>
+              <ButtonCreatePlaylist createPlaylist={createPlaylist} title="Tanzbare Songs" description="Rauf auf die Tanzfläche" tracks={danceableTracks}></ButtonCreatePlaylist>
 
             </Container>
           </Container>
