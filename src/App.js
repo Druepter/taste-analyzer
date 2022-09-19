@@ -1,21 +1,15 @@
 import React, { useState, useEffect} from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
-
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
-
-
-import Home from "./home";
+import Home from "./Home";
 import Login from "./login";
-import UserName from "./userName";
-import HideAppBar from "./AppBar";
-import { render } from "@testing-library/react";
+import MyAppBar from "./AppBar";
 import Danceable from "./danceable";
 import {Helmet} from "react-helmet";
 import LowValence from "./LowValence";
@@ -23,8 +17,6 @@ import HighValence from "./HighValence";
 import Acoustic from "./Acoustic";
 import Instrumental from "./Instrumental";
 import Live from "./Live";
-
-
 import danceableImageSmall from "./assets/tanzbar_klein.jpg"
 import lowValenceImageSmall from "./assets/traurig_klein.jpg"
 import highValenceImageSmall from "./assets/gluecklich_klein.jpg";
@@ -33,15 +25,13 @@ import instrumentalImageSmall from "./assets/instrumental_klein.jpg";
 import liveImageSmall from "./assets/live_klein.jpg";
 import highEnergyImageSmall from "./assets/energetisch_klein.jpg";
 import lowEnergyImageSmall from "./assets/ruhig_klein.jpg";
-
-
-import { CollectionsBookmarkRounded } from "@mui/icons-material";
 import HighEnergy from "./HighEnergy";
 import LowEnergy from "./LowEnergy";
 
 
 function App() {
  
+  //Farben der Anwendnung
   const theme = createTheme({
     palette: {
       primary: {
@@ -59,33 +49,45 @@ function App() {
     },
   });
 
+  //Varibalen für Spotify for Developers
+  //ID der Anwendnung
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
+  //Seite auf welche weitergeleitet werden soll, wenn Login erfolgreich
   const REDIRECT_URI = "http://localhost:3000/home"
+  //Authenrifikationsendpunkt
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
+  //Token soll zurückkommen bei erfolgreichem login
   const RESPONSE_TYPE = "token"
+  //Varible, welche Berechtigungen diese Anwendung für den eingeloggten Spotify Account braucht
+  var scope = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private';
 
+
+  //State für Token
   const [token, setToken] = useState("")
 
-
+  //States für die Lieblingssongs
   const [favoriteTracksShortTerm, setFavoriteTracksShortTerm] = useState([])
   const [favoriteTracksMediumTerm, setFavoriteTracksMediumTerm] = useState([])
   const [favoriteTracksLongTerm, setFavoriteTracksLongTerm] = useState([])
   const [allFavoriteTracks, setAllFavoriteTracks] = useState([])
 
+  //States für die AudioFeatures
   const [audioFeaturesShortTerm, setAudioFeaturesShortTerm] = useState([])
   const [audioFeaturesMediumTerm, setAudioFeaturesMediumTerm] = useState([])
   const [audioFeaturesLongTerm, setAudioFeaturesLongTerm] = useState([])
   const [allAudioFeatures, setAllAudioFeatures] = useState([])
 
+  //State für das Profil des akutellen Benutzers
   const [currentUsersProfile, setCurrentUsersProfile] = useState([])
 
+  //States um die Ladezeiten zu koodinieren
   const [isLoadingShortTerm, setIsLoadingShortTerm] = useState(true)
   const [isLoadingMediumTerm, setIsLoadingMediumTerm] = useState(true)
   const [isLoadingLongTerm, setIsLoadingLongTerm] = useState(true)
   const [isLoadingCurrentUsersProfile, setIsLoadingCurrentUsersProfile] = useState(true)
   const [isLoadingAll, setIsLoadingAll] = useState(true)
   const [readyToRender, setReadyToRender] = useState(false)
-  const [readyToBuildChart, setReadyToBuildChart] = useState(false)
+  const [readyToBuildDashboard, setReadyToBuildDashboard] = useState(false)
 
   //Arrays und States für einzelne Song Kategorien
   const [danceableTracks, setDanceableTracks] = useState();
@@ -117,22 +119,20 @@ function App() {
   //Gibt an auf welcher Seite sich die Anwendung gerade befindet
   const [renderState, setRenderState] = useState('home')
 
-
-
-
+  //Arrays für die Lieblingssongs und AudioFeatures
   var favoriteTracksArrayShortTerm
   var favoriteTracksArrayMediumTerm
   var favoriteTracksArrayLongTerm
   var audioFeaturesArray
 
-  var scope = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private';
+  ////////////// USE EFEEKT HOOKS ///////////////////
 
+  //Diese Hook wird immer aufgeführt wenn die Seite neu gerendert wird
   useEffect(() => {
-    console.log("RenderState wurde geändert")
-  }, [renderState])
 
-  useEffect(() => {
+    //Lese hash aus URL aus
     const hash = window.location.hash
+    //Hole token aus local Storage
     let token = window.localStorage.getItem("token")
 
     //Wenn ein Token vorhanden ist dann gehe direkt auf die Homepage
@@ -140,32 +140,30 @@ function App() {
       window.location.href = "/home"
     }
 
+    //Wenn kein Token vorhanden ist aber hash dann bearbeite den hash
     if(!token && hash){
+      //#access_token vor dem hash entfernen = token
       token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
-
+      //token in local storage speichern
       window.location.hash = "";
       window.localStorage.setItem("token", token)
       
     }
 
+    //State für local storage setzen
     setToken(token)
-
-    console.log("Use Effekt ohne Parameter wird ausgeführt")
-
   }, [])
 
-
-
-
-
+  //Wenn alle drei favorite Track Kategorien und Benutzerprofil von der Spotify API geladen sind, dann führe dies aus
   useEffect(() => {
-    //Wenn alle drei Favorite Tracks Kategorien geladen sind, dann konkatiniere sie
+    //Wenn alle drei Favorite Tracks Kategorien geladen und Bnutzerprofil sind, dann konkatiniere sie
     if(isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false && isLoadingCurrentUsersProfile == false){
       setIsLoadingAll(false)
       concatFavoriteTracks()
     }
   }, [isLoadingShortTerm, isLoadingMediumTerm, isLoadingLongTerm, isLoadingCurrentUsersProfile])
 
+  //Wenn die drei favorite Tracks Kategorien fertig konkatiniert sind dann lade einzelne Track Kategorien
   useEffect(() => {
     //Wenn Alle Favorite Songs fertig zusammengebaut sind dann führe das hier aus
     //Hier alle Methoden die gebraucht werden aufrufen
@@ -173,7 +171,6 @@ function App() {
     //Danceable Songs
     //...
     if(isLoadingAll == false){
-      console.log("allFavoriteTracks haben sich geändert")
       getDanceableTracks()
       getTracksWithLowValence()
       getTracksWithHighValence()
@@ -183,18 +180,18 @@ function App() {
       getTracksWithHighEnergy()
       getTracksWithLowEnergy()
 
-
-      //Nachdem alle Tracks zusammengebaut wurden, wird der State readyToBuildChart auf true gesetzt
-      //Dadurch wird getriggert, dass das Kreisdiagramm zusammengebaut werden kann, da nun alle benötigten Informationen vorhanden sind
-      setReadyToBuildChart(true)
+      //Nachdem alle Track Kategorien zusammengebaut wurden, wird der State readyToBuildDashboard auf true gesetzt
+      //Dadurch wird getriggert, dass das nun alle Informationen vorhanden sind um das Dashboard zu erstellen
+      setReadyToBuildDashboard(true)
     }
 
   }, [allFavoriteTracks])
 
-
+  //Wenn alle Informationen vorhanden sind um das Dashboard zu erstellen führe diese UseEffect Hook aus
   useEffect(() => {
 
-    if(readyToBuildChart == true){
+    //Wenn das Dashboard gebaut werden kann dann tue dies
+    if(readyToBuildDashboard == true){
       
       //Hier werden Arrays zusammengebaut welches für das Kreisdiagramm verwendet wird
       //Diese werden an die Komponete Home übergeben, welche diese dann weiter gibt an die Komponente Kreisdiagramm
@@ -341,45 +338,41 @@ function App() {
       setChartData(data)
       setChartLabels(labels)
 
-
-      console.log(trackCategoriesArray)
       //trackCategoreisArray nach Anzahl der Songs in jeder Kategorie sortieren
       trackCategoriesArray.sort(function(a, b){
         return a[4] - b[4]
       })
       trackCategoriesArray.reverse()
-      console.log(trackCategoriesArray)
 
       //Setze State für die Dashboard Karten
       setTrackCategories(trackCategoriesArray)
 
-      //Nachdem das Kreisdiagramm zusammengebaut wurde sind nun alle Informationen vollständig um die Homepage zu rendern
+      //Nachdem das Kreisdiagramm zusammengebaut wurde und die Dashboard Karten Informationen gesammelt wurden, sind nun alle Informationen vollständig um die Homepage zu rendern
       //Dazu wird das State readyToRender auf true gesetzt
       //Dieser wird an die Komponete Home übergeben
       setReadyToRender(true)
     }
     
 
-  }, [readyToBuildChart])
-
-  useEffect(() => {
-    //Wenn alle Songs geladen sind und danceable Tracks fertig sind erstelle die Playliste dazu
-    if(isLoadingAll == false){
-      //createPlaylist("Tanzbare Songs", danceableTracks)
-    }
-
-  }, [danceableTracks])
+  }, [readyToBuildDashboard])
 
 
+  ///////////// SPOTIFY API FUNKTIONEN ///////////
+
+  //Funktion um einen Nutzer auszuloggen
   const logout = () => {
+    //State token wird auf leer gesetzt
     setToken("")
+    //token wird aus local storage entfernt
     window.localStorage.removeItem("token");
+    //location wird auf die Login Seite gesetzt
     window.location.replace("/");
   }
 
   //Hole die Profildetails des aktuell eingeloggten Nutzers
   const getCurrentUsersProfile = async () => {
 
+    //Verbindung zur Spotify API
     await fetch('https://api.spotify.com/v1/me', {
       method: 'get',
       headers: new Headers({
@@ -387,6 +380,7 @@ function App() {
       })
     }).then(response => response.json())
     .then(data => {
+        //Wenn ergebnis da ist dann speichere aktuelle Nutzerinformationen in State
         setCurrentUsersProfile(data)
         setIsLoadingCurrentUsersProfile(false)
     });    
@@ -451,7 +445,6 @@ function App() {
 
   }
 
-
   //In dieser Function werden die Audio Features 50 beliebesten Tracks des aktuellen Nutzers der Spotify API geladen
   const getFavoriteTracksAudioFeaturesMediumTerm = async () => {
 
@@ -510,7 +503,6 @@ function App() {
     });
 
   }
-
 
   //In dieser Function werden die Audio Features 50 beliebesten Tracks des aktuellen Nutzers der Spotify API geladen
   const getFavoriteTracksAudioFeaturesLongTerm = async () => {
@@ -573,23 +565,27 @@ function App() {
 
 
 
-  const concatFavoriteTracks = () => {
-    //ToDo: alle drei Arrays vereinen
+  ///////// TRACK FUNKTIONEN ////////
 
+  //Alle drei Favorite Track Kategorien (shortTerm, mediumTerm, longTerm) werden in ein Array gespeichert
+  const concatFavoriteTracks = () => {
+
+    //Array konkatinieren
     var allFavoriteTracksArray = favoriteTracksShortTerm.concat(favoriteTracksMediumTerm, favoriteTracksLongTerm)
-    //var allFavoriteTracksNew = allFavoriteTracks.concat(favoriteTracksArrayLongTerm)
-    //console.log(allFavoriteTracks)
-    //console.log(allFavoriteTracksNew)
+    //Duplikate entfernen
     var allFavoriteTracksWithoutDuplicates = removeDuplicates(allFavoriteTracksArray)
     //State, welcher alle Favorite Tracks speichert wird gesetzt
     setAllFavoriteTracks(allFavoriteTracksWithoutDuplicates)
     
+    //Audio Features Array konkatinieren
     var allFavoriteTracksAudioFeatures = audioFeaturesShortTerm.concat(audioFeaturesMediumTerm, audioFeaturesLongTerm)
-    //allFavoriteTracksAudioFeatures = allFavoriteTracksAudioFeatures.concat(audioFeaturesLongTerm)
+    //Duplikate entfernen
     var allFavoriteTracksAudioFeaturesWithoutDuplicates = removeDuplicates(allFavoriteTracksAudioFeatures)
     setAllAudioFeatures(allFavoriteTracksAudioFeaturesWithoutDuplicates)
   }
 
+  //Funktion um duplicate aus Array zu entfernen
+  //Kopiert aus Internet
   function removeDuplicates(inArray){
     var arr = inArray.concat() // create a clone from inArray so not to change input array
     //create the first cycle of the loop starting from element 0 or n
@@ -606,9 +602,7 @@ function App() {
   }
 
 
-
-  
-
+  //Tanzbare Songs heraussuchen
   const getDanceableTracks = () => {
 
     //Iteriere über Audio Features Array
@@ -645,7 +639,6 @@ function App() {
     //Wenn Valence unter 0.25 ist in neue Liste schreiben
     //Hole dir Songnamen anhand von id aus favertie Tracks Array
 
-
     //Interiere über alle AudioFeatures von allen Tracks
     for(var i=0; i < allAudioFeatures.length; i++){
 
@@ -678,7 +671,6 @@ function App() {
     }
     //setze state
     setTracksWithLowValence(tracksWithLowValenceArray)
-    console.log(tracksWithLowValenceArray)
   }
  
   const getTracksWithHighValence = () => {
@@ -706,7 +698,6 @@ function App() {
       }
       
     }
-    console.log(tracksWithHighValenceArray)
     setTracksWithHighValence(tracksWithHighValenceArray)
   }
 
@@ -911,7 +902,9 @@ function App() {
   }
 
 
+  /////////  PLAYLIST FUNKTIONEN ///////////
 
+  //erstelle Playliste
   const createPlaylist = (name, tracks) => {
 
     //Token aus lokal storage holen
@@ -934,13 +927,13 @@ function App() {
 
   }
 
+  //Füge Tracks zu einer Playliste hinzu
   const addTracksToPlaylist = (id, tracks) => {
 
     //Token aus lokal storage holen
     var localStorageToken = window.localStorage.getItem('token')
 
     const tracksURIs = tracks.map(track => "spotify:track:" + track[0])
-
 
     axios.post('https://api.spotify.com/v1/playlists/' + id + '/tracks', {
       uris: tracksURIs
@@ -963,13 +956,17 @@ function App() {
 
   return (
     <>
-
-
+      {/* Wende das Custom Farbschema an */}
       <ThemeProvider theme={theme}>
 
+      {/* Hintergrundfarbe für alle Seiten */}
       <div style={{backgroundColor: "#f6f6f6"}}>
         
       <Router>
+        {/* Wenn kein token da ist rendere Login Page
+            Wenn ein token vorhanden ist wird automatisch auf die Homepage weitergeleitet
+            Wenn ein token da ist rendere AppBar
+        */}
         {!token ?
           <>
             <Login _AUTH_ENDPOINT={AUTH_ENDPOINT} _CLIENT_ID={CLIENT_ID} _REDIRECT_URI={REDIRECT_URI} _RESPONSE_TYPE={RESPONSE_TYPE} _scope={scope}></Login>
@@ -977,32 +974,13 @@ function App() {
 
         : 
           <>    
-            <HideAppBar logout={logout} path={renderState}></HideAppBar>
+            <MyAppBar logout={logout} path={renderState}></MyAppBar>
           </>
         
         }
-        {/*{token ?
-          <>
-
-            {isLoadingShortTerm == false && isLoadingMediumTerm == false && isLoadingLongTerm == false ?
-              <> 
-              </>
-            :
-              <>
-                <div>Wird geladen</div>
-              </> 
-            }
-            
-          </>
-          
-
-          :
-          <></>
-        } */}
-
-
+  
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState}/>}></Route>   
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
@@ -1015,6 +993,7 @@ function App() {
 
 
       </Router>
+
       </div>
 
       </ThemeProvider>

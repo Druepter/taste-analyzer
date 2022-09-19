@@ -1,78 +1,149 @@
-import PropTypes from 'prop-types';
-import merge from 'lodash/merge';
-import ReactApexChart from 'react-apexcharts';
-// @mui
-import { useTheme, styled } from '@mui/material/styles';
-import { Card, CardHeader } from '@mui/material';
-// utils
-import { fNumber } from './formatNumber';
-// components
-import { BaseOptionChartStyle } from './BaseOptionChart';
+import { Doughnut } from 'react-chartjs-2';
+import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
+import LaptopMacIcon from '@mui/icons-material/LaptopMac';
+import PhoneIcon from '@mui/icons-material/Phone';
+import TabletIcon from '@mui/icons-material/Tablet';
 
-// ----------------------------------------------------------------------
 
-const CHART_HEIGHT = 500;
-const LEGEND_HEIGHT = 100;
 
-const ChartWrapperStyle = styled('div')(({ theme }) => ({
-  height: CHART_HEIGHT,
-  marginTop: theme.spacing(5),
-  '& .apexcharts-canvas svg': { height: CHART_HEIGHT },
-  '& .apexcharts-canvas svg,.apexcharts-canvas foreignObject': {
-    overflow: 'visible',
-  },
-  '& .apexcharts-legend': {
-    height: LEGEND_HEIGHT,
-    alignContent: 'center',
-    position: 'relative !important',
-    borderTop: `solid 1px ${theme.palette.divider}`,
-    top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`,
-  },
-}));
+export default function PieChart({chartColors, chartData, chartLabels, trackCategories}){
 
-// ----------------------------------------------------------------------
-
-AppCurrentVisits.propTypes = {
-  title: PropTypes.string,
-  subheader: PropTypes.string,
-  chartColors: PropTypes.arrayOf(PropTypes.string),
-  chartData: PropTypes.array,
-};
-
-export default function AppCurrentVisits({ title, subheader, chartColors, chartData, ...other }) {
+//export const TrafficByDevice = (props, test) => {
   const theme = useTheme();
 
-  const chartLabels = chartData.map((i) => i.label);
+  var dataTest = []
+  var colors = []
+  var labels = []
 
-  const chartSeries = chartData.map((i) => i.value);
+  for(var i=0; i < trackCategories.length; i++){
+    dataTest.push(trackCategories[i][4])
+    colors.push(trackCategories[i][5])
+    labels.push(trackCategories[i][2])
+  }
 
-  const chartOptions = merge(BaseOptionChartStyle(), {
-    colors: chartColors,
-    labels: chartLabels,
-    stroke: { colors: [theme.palette.background.paper] },
-    legend: { floating: true, horizontalAlign: 'center' },
-    dataLabels: { enabled: true, dropShadow: { enabled: false } },
-    tooltip: {
-      fillSeriesColor: false,
-      y: {
-        formatter: (seriesName) => fNumber(seriesName),
-        title: {
-          formatter: (seriesName) => `${seriesName}`,
-        },
-      },
+  const data = {
+    datasets: [
+      {
+        data: dataTest,
+        backgroundColor: colors,
+        borderWidth: 8,
+        borderColor: '#FFFFFF',
+        hoverBorderColor: '#FFFFFF'
+      }
+    ],
+    labels: labels
+  };
+
+  const options = {
+    animation: false,
+    cutoutPercentage: 80,
+    layout: { padding: 0 },
+    legend: {
+      display: false
     },
-    plotOptions: {
-      pie: { donut: { labels: { show: false } } },
+    maintainAspectRatio: false,
+    responsive: true,
+    tooltips: {
+      backgroundColor: theme.palette.background.paper,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: 'index',
+      titleFontColor: theme.palette.text.primary
+    }
+  };
+
+  const devices = [
+    {
+      title: 'Desktop',
+      value: 63,
+      icon: LaptopMacIcon,
+      color: '#3F51B5'
     },
-  });
+    {
+      title: 'Tablet',
+      value: 15,
+      icon: TabletIcon,
+      color: '#E53935'
+    },
+    {
+      title: 'Mobile',
+      value: 23,
+      icon: PhoneIcon,
+      color: '#FB8C00'
+    }
+  ];
 
   return (
-    <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
+    
+    <Box
+    sx={{
+      height: 300,
+      position: 'relative'
+    }}
+  >
+    <Doughnut
+      data={data}
+      options={options}
+    />
+  </Box>
 
-      <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="pie" series={chartSeries} options={chartOptions} height={280} />
-      </ChartWrapperStyle>
-    </Card>
+    /*<Card>
+      <CardHeader title='huhu' />
+      <Divider />
+      <CardContent>
+        <Box
+          sx={{
+            height: 300,
+            position: 'relative'
+          }}
+        >
+          <Doughnut
+            data={data}
+            options={options}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            pt: 2
+          }}
+        >
+          {devices.map(({
+            color,
+            icon: Icon,
+            title,
+            value
+          }) => (
+            <Box
+              key={title}
+              sx={{
+                p: 1,
+                textAlign: 'center'
+              }}
+            >
+              <Icon color="action" />
+              <Typography
+                color="textPrimary"
+                variant="body1"
+              >
+                {title}
+              </Typography>
+              <Typography
+                style={{ color }}
+                variant="h4"
+              >
+                {value}
+                %
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </CardContent>
+    </Card>*/
   );
-}
+};

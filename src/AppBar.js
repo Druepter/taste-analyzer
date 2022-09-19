@@ -5,14 +5,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link as RouterLink, MemoryRouter } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 
 
@@ -41,7 +38,10 @@ HideOnScroll.propTypes = {
   window: PropTypes.func,
 };
 
-export default function HideAppBar({props, logout, path}) {
+//AppBar nimmt Logout Funktion und Path entgegen
+//Über den Path wird gecheckt ob welcher Seite der Nutzer sich gerade befindet
+//Somit wird entschieden ob der zurück Button angezeigt werden soll
+export default function MyAppBar({props, logout, path}) {
   return (
     <React.Fragment>
       <CssBaseline />
