@@ -1,21 +1,9 @@
-import React, {useState} from "react";
-
-
-import { styled } from '@mui/material/styles';
+import React from "react";
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import FolderIcon from '@mui/icons-material/Folder';
-import Divider from '@mui/material/Divider';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import { ListItemButton } from "@mui/material";
-import DashboardCard from "./dashboardCard";
 
+import DashboardCard from "./DashboardCard";
 
+//Diese Funktion erstellt das Grid System im welchem alle Dashboard Karten drin sind
 export default function DashboardCards({trackCategories}){
 
     return trackCategories.map(categorie =>(

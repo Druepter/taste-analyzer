@@ -1,8 +1,8 @@
 import React, { useState, useEffect} from "react";
 import TrackList from "./TrackList";
-import CategoryPageHeader from "./categoryPageHeader";
+import CategoryPageHeader from "./CategoryPageHeader";
 import Container from '@mui/material/Container';
-import ButtonCreatePlaylist from "./buttonCreatePlaylist";
+import ButtonCreatePlaylist from "./ButtonCreatePlaylist";
 import acousticImage from "./assets/akustik_mittel.jpg"
 
 export default function Acosutic({acousticTracks, createPlaylist, renderState}){
