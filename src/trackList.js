@@ -1,14 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 
-
-import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FolderIcon from '@mui/icons-material/Folder';
 import Divider from '@mui/material/Divider';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -44,42 +39,25 @@ export default function TrackList({tracks}){
         ))
     }
 
-
-
-    const renderTracks = () => {
-        return tracks.map(track =>(
-            <>
-                <div key={track[0]}>
-                    <span>{track[1]} - </span>
-                    <span>{renderArtists(track[2])}</span>
-                    <img src={track[3].url} width="30px"></img>
-                </div>
-            </>
-        ))
-    }
-
     const renderArtists = (artists) => {
-        return artists.map(artist =>(
-           <span>
-                {artist.name.toString()}
-           </span> 
-        ))
-            
+        //Wenn es mehr als ein Artist sind dann füge Komma dazwischen
+        return artists.map((artist, i, {length}) => (
+            <span>
+                {length - 1 === i ?
+                    <span>{artist.name.toString()}</span>
+                :
+                    <span>{artist.name.toString()}, </span>    
+                }
+            </span>
+        ))                  
     }
 
     return (
         <>
          <Grid item xs={12} md={6}>        
-         <List dense={dense}>
-            {renderTracksMUI()}
-
-
-         </List>
+            <List dense={dense}>
+                {renderTracksMUI()}
+            </List>
          </Grid>
-
-
-
-
-         {/**<div>{renderTracks()}</div>**/}
         </>
     )}

@@ -286,7 +286,7 @@ function App() {
         trackCategoriesArray.push(categorieArray)
       }
       //Wenn mehr als 3 live Songs in den Lieblingssongs sind dann füge sie hinzu
-      if(liveTracks.length >= 2){
+      if(liveTracks.length >= 3){
         colors.push('#EDA543')
         data.push(liveTracks.length)
         labels.push('Live Songs')
@@ -944,8 +944,7 @@ function App() {
       }
     })
     .then(function (response){
-      console.log(response)
-      alert("Playlist wurde erfolgreich erstellt")
+      alert("Hey! Playlist wurde erfolgreich erstellt, schaue in deinem Spotify-Profil vorbei, dort wirst du sie finden!")
     })
     .catch(function (error){
       console.log(error)
