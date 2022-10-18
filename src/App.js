@@ -962,7 +962,7 @@ function App() {
       {/* Hintergrundfarbe für alle Seiten */}
       <div style={{backgroundColor: "#f6f6f6"}}>
         
-      <Router>
+      
         {/* Wenn kein token da ist rendere Login Page
             Wenn ein token vorhanden ist wird automatisch auf die Homepage weitergeleitet
             Wenn ein token da ist rendere AppBar
@@ -992,7 +992,7 @@ function App() {
         </Routes> 
 
 
-      </Router>
+    
 
       </div>
 
