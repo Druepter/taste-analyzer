@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from '@mui/material/Grid';
 
-import DashboardCard from "./DashboardCard";
+import DashboardCard from "./dashboardCard";
 
 //Diese Funktion erstellt das Grid System im welchem alle Dashboard Karten drin sind
 export default function DashboardCards({trackCategories}){

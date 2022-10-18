@@ -1,9 +1,9 @@
 import React, { useState, useEffect} from "react";
-import TrackList from "./TrackList";
-import CategoryPageHeader from "./CategoryPageHeader";
+import TrackList from "./trackList";
+import CategoryPageHeader from "./categoryPageHeader";
 import Container from '@mui/material/Container';
 import danceableImageSmall from "./assets/tanzbar_klein.jpg"
-import ButtonCreatePlaylist from "./ButtonCreatePlaylist";
+import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 
 
 export default function Danceable({danceableTracks, createPlaylist, renderState}){

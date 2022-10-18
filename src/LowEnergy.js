@@ -1,8 +1,8 @@
 import React, { useState, useEffect} from "react";
-import TrackList from "./TrackList";
-import CategoryPageHeader from "./CategoryPageHeader";
+import TrackList from "./trackList";
+import CategoryPageHeader from "./categoryPageHeader";
 import Container from '@mui/material/Container';
-import ButtonCreatePlaylist from "./ButtonCreatePlaylist";
+import ButtonCreatePlaylist from "./buttonCreatePlaylist";
 import lowEnergyImage from "./assets/ruhig_mittel.jpg"
 
 export default function LowEnergy({tracksWithLowEnergy, createPlaylist, renderState}){
