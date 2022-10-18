@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/taste-analyzer/static/css/main.7de694dc.css",
-    "main.js": "/taste-analyzer/static/js/main.152f941a.js",
+    "main.js": "/taste-analyzer/static/js/main.481b3b4d.js",
     "static/media/spotify_zugeschnitten.jpg": "/taste-analyzer/static/media/spotify_zugeschnitten.5e2f6cac62f6ad9bc3b3.jpg",
     "static/media/gluecklich_mittel.jpg": "/taste-analyzer/static/media/gluecklich_mittel.fc277f56c62691dccdc7.jpg",
     "static/media/instrumental_mittel.jpg": "/taste-analyzer/static/media/instrumental_mittel.4bfaa4a072e95a783b17.jpg",
@@ -52,10 +52,10 @@
     "static/media/roboto-greek-ext-700-normal.woff2": "/taste-analyzer/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/taste-analyzer/index.html",
     "main.7de694dc.css.map": "/taste-analyzer/static/css/main.7de694dc.css.map",
-    "main.152f941a.js.map": "/taste-analyzer/static/js/main.152f941a.js.map"
+    "main.481b3b4d.js.map": "/taste-analyzer/static/js/main.481b3b4d.js.map"
   },
   "entrypoints": [
     "static/css/main.7de694dc.css",
-    "static/js/main.152f941a.js"
+    "static/js/main.481b3b4d.js"
   ]
 }
