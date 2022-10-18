@@ -53,7 +53,7 @@ function App() {
   //ID der Anwendnung
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
   //Seite auf welche weitergeleitet werden soll, wenn Login erfolgreich
-  const REDIRECT_URI = "http://localhost:3000/home"
+  const REDIRECT_URI = "https://druepter.github.io/taste-analyzer/home"
   //Authenrifikationsendpunkt
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   //Token soll zurückkommen bei erfolgreichem login
