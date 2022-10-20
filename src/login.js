@@ -6,6 +6,10 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import spotifyImage from './assets/spotify_zugeschnitten.jpg'
 import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
+
 
 //Mit dieser Funktion wird die Login Seite erstellt
 //Als Parameter werden Eigenschaften entgegengenommen, welche für den Login mit Spotify benötigt werden
@@ -58,6 +62,8 @@ export default function Login({_AUTH_ENDPOINT, _CLIENT_ID, _REDIRECT_URI, _RESPO
             >
               {/* Button zum Login bei Spotify, als Query werden die Parameter der Funktion verwendet */}
               <Button variant="contained" href={`${_AUTH_ENDPOINT}?client_id=${_CLIENT_ID}&redirect_uri=${_REDIRECT_URI}&response_type=${_RESPONSE_TYPE}&scope=${_scope}`}>Mit Spotify einloggen</Button>
+              <Button component={RouterLink} to={`${_AUTH_ENDPOINT}?client_id=${_CLIENT_ID}&redirect_uri=${_REDIRECT_URI}&response_type=${_RESPONSE_TYPE}&scope=${_scope}`}>Hallo1234</Button>
+              
         </Box>             
       </Container>
       </Container>

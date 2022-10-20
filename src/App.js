@@ -53,7 +53,8 @@ function App() {
   //ID der Anwendnung
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
   //Seite auf welche weitergeleitet werden soll, wenn Login erfolgreich
-  const REDIRECT_URI = "https://druepter.github.io/taste-analyzer/home"
+  const REDIRECT_URI = "http://localhost:3000/home"
+  //https://druepter.github.io/taste-analyzer/home
   //Authenrifikationsendpunkt
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   //Token soll zurückkommen bei erfolgreichem login
@@ -980,7 +981,8 @@ function App() {
         }
   
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState}/>}></Route>   
+
+          <Route exact path="/home" component={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
