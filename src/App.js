@@ -119,6 +119,11 @@ function App() {
   //Gibt an auf welcher Seite sich die Anwendung gerade befindet
   const [renderState, setRenderState] = useState('home')
 
+
+  //Valence und Arousal State
+  const [valence, setValence] = useState()
+  const [arousal, setArousal] = useState()	
+
   //Arrays für die Lieblingssongs und AudioFeatures
   var favoriteTracksArrayShortTerm
   var favoriteTracksArrayMediumTerm
@@ -179,6 +184,15 @@ function App() {
       getLiveTracks()
       getTracksWithHighEnergy()
       getTracksWithLowEnergy()
+      console.log("Short Term:")
+      getAverageValence(audioFeaturesShortTerm)
+      getAverageArousal(audioFeaturesShortTerm)
+      console.log("Medium Term:")
+      getAverageValence(audioFeaturesMediumTerm)
+      getAverageArousal(audioFeaturesMediumTerm)
+      console.log("Long Term:")
+      getAverageValence(audioFeaturesLongTerm)
+      getAverageArousal(audioFeaturesLongTerm)      
 
       //Nachdem alle Track Kategorien zusammengebaut wurden, wird der State readyToBuildDashboard auf true gesetzt
       //Dadurch wird getriggert, dass das nun alle Informationen vorhanden sind um das Dashboard zu erstellen
@@ -602,6 +616,48 @@ function App() {
   }
 
 
+  /////// FUNKTIONEN FÜR MUSIKFORSCHUNG //////
+
+  const getAverageValence = (audioFeatures) => {
+
+    var valence = 0
+
+    for(var i=0; i<audioFeatures.length; i++){
+      valence = valence + audioFeatures[i].valence
+    }
+   
+    valence = valence / audioFeatures.length;
+
+    setValence(valence)
+
+    console.log("Durchschnittliche Valenz:")
+    console.log(valence)
+
+  }
+
+  const getAverageArousal = (audioFeatures) => {
+
+    var arousal = 0
+
+    //Arousal = Energie 
+
+    for(var i=0; i<audioFeatures.length; i++){
+      arousal = arousal + audioFeatures[i].energy
+    }
+
+    arousal = arousal / audioFeatures.length;
+
+    console.log("Durchschnittliches Arousel:")
+    console.log(arousal)
+
+  }
+
+
+  //Das muss in Tracks rein
+  //audioFeaturesShortTerm
+
+
+
   //Tanzbare Songs heraussuchen
   const getDanceableTracks = () => {
 
@@ -980,7 +1036,7 @@ function App() {
         }
   
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState}/>}></Route>   
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState} valenceState={valence}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
