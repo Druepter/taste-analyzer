@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import PieChart from "./PieChart";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import DashboardCards from './DashboardCards'
-import { CSVLink, CSVDownload } from "react-csv";
+//import { CSVLink, CSVDownload } from "react-csv";
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -76,7 +76,7 @@ export default function Home({getFavoriteTracksAudioFeaturesShortTerm, getFavori
                           <DashboardCards trackCategories={trackCategories}></DashboardCards>
                         </Grid>
 
-                        <CSVLink data={String(valenceState)}>Download me</CSVLink>;
+                        {/*<CSVLink data={String(valenceState)}>Download me</CSVLink>;*/}
 
 
 
