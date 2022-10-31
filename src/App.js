@@ -184,6 +184,11 @@ function App() {
       getLiveTracks()
       getTracksWithHighEnergy()
       getTracksWithLowEnergy()
+
+      //const { Client } = require('pg')
+      //const client = new Client()
+
+
       console.log("Short Term:")
       getAverageValence(audioFeaturesShortTerm)
       getAverageArousal(audioFeaturesShortTerm)
