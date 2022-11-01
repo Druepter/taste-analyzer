@@ -137,7 +137,7 @@ function App() {
   const mysql_user = {
     host: 'localhost',
     user: 'root',
-    password: 'Jc6Ba5O!!!',
+    password: 'passwort',
   };
 
   const connection = mysql.createConnection(mysql_user, {
