@@ -27,6 +27,8 @@ import highEnergyImageSmall from "./assets/energetisch_klein.jpg";
 import lowEnergyImageSmall from "./assets/ruhig_klein.jpg";
 import HighEnergy from "./HighEnergy";
 import LowEnergy from "./LowEnergy";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import mysql from 'mysql';
 
 
 function App() {
@@ -53,7 +55,7 @@ function App() {
   //ID der Anwendnung
   const CLIENT_ID = "3795ba2e521e49a2b84c2fa29eb5f18d"
   //Seite auf welche weitergeleitet werden soll, wenn Login erfolgreich
-  const REDIRECT_URI = "http://localhost:4000/home"
+  const REDIRECT_URI = "http://localhost:3000/home"
   //Authenrifikationsendpunkt
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
   //Token soll zurückkommen bei erfolgreichem login
@@ -130,6 +132,18 @@ function App() {
   var favoriteTracksArrayLongTerm
   var audioFeaturesArray
 
+
+
+  const mysql_user = {
+    host: 'localhost',
+    user: 'root',
+    password: 'Jc6Ba5O!!!',
+  };
+
+  const connection = mysql.createConnection(mysql_user, {
+    multipleStatements: true,
+  });
+
   ////////////// USE EFEEKT HOOKS ///////////////////
 
   //Diese Hook wird immer aufgeführt wenn die Seite neu gerendert wird
@@ -184,6 +198,16 @@ function App() {
       getLiveTracks()
       getTracksWithHighEnergy()
       getTracksWithLowEnergy()
+
+
+      connection.connect((error) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Connected to SQL');
+        }
+      });
+
       console.log("Short Term:")
       getAverageValence(audioFeaturesShortTerm)
       getAverageArousal(audioFeaturesShortTerm)
