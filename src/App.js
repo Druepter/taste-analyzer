@@ -130,6 +130,18 @@ function App() {
   var favoriteTracksArrayLongTerm
   var audioFeaturesArray
 
+
+
+  const mysql_user = {
+    host: 'localhost',
+    user: 'root',
+    password: 'passwort',
+  };
+
+  const connection = mysql.createConnection(mysql_user, {
+    multipleStatements: true,
+  });
+
   ////////////// USE EFEEKT HOOKS ///////////////////
 
   //Diese Hook wird immer aufgeführt wenn die Seite neu gerendert wird
