@@ -132,9 +132,12 @@ function App() {
   var favoriteTracksArrayLongTerm
   var audioFeaturesArray
 
+  /*const pool = mysql.createPool({
+
+  });*/
 
 
-  const mysql_user = {
+  /*const mysql_user = {
     host: 'localhost',
     user: 'root',
     password: 'passwort',
@@ -142,7 +145,7 @@ function App() {
 
   const connection = mysql.createConnection(mysql_user, {
     multipleStatements: true,
-  });
+  });*/
 
   ////////////// USE EFEEKT HOOKS ///////////////////
 
@@ -200,13 +203,13 @@ function App() {
       getTracksWithLowEnergy()
 
 
-      connection.connect((error) => {
+      /*connection.connect((error) => {
         if (error) {
           console.log(error);
         } else {
           console.log('Connected to SQL');
         }
-      });
+      });*/
 
       console.log("Short Term:")
       getAverageValence(audioFeaturesShortTerm)
