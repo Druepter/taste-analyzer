@@ -28,7 +28,6 @@ import lowEnergyImageSmall from "./assets/ruhig_klein.jpg";
 import HighEnergy from "./HighEnergy";
 import LowEnergy from "./LowEnergy";
 import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
-import mysql from 'mysql';
 
 
 function App() {
@@ -132,9 +131,31 @@ function App() {
   var favoriteTracksArrayLongTerm
   var audioFeaturesArray
 
-  /*const pool = mysql.createPool({
+  var mysql = require('mysql');
 
+  const mysql_user = {
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+  };
+
+  /*const pool = mysql.createPool({
+    connectionLimit: 10,
+    host: 'localhost',
+    user: 'root',
+    password: 'passwort',
+    database: 'spotify_data'
   });*/
+
+  /*var con = mysql.createConnection({
+    host: "localhost",
+    user: "yourusername",
+    password: "yourpassword"
+  });
+
+  con.connect();*/
+
+
 
 
   /*const mysql_user = {
@@ -202,6 +223,8 @@ function App() {
       getTracksWithHighEnergy()
       getTracksWithLowEnergy()
 
+      //console.log("jo")
+      //console.log(process)
 
       /*connection.connect((error) => {
         if (error) {
