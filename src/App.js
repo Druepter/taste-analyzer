@@ -223,6 +223,8 @@ function App() {
       getTracksWithHighEnergy()
       getTracksWithLowEnergy()
 
+      sendDataToBackend()
+
       //console.log("jo")
       //console.log(process)
 
@@ -1051,6 +1053,28 @@ function App() {
     })
     .then(function (response){
       alert("Hey! Playlist wurde erfolgreich erstellt, schaue in deinem Spotify-Profil vorbei, dort wirst du sie finden!")
+    })
+    .catch(function (error){
+      console.log(error)
+    })
+
+  }
+
+
+  //////// VERBINDUNG MIT BACKEND //////////
+
+  const sendDataToBackend = () => {
+
+    var username = "test"
+    var valenz = 0.7
+    var arousal = 0.1
+
+    axios.post("http://localhost:3001/createEntry", {
+      username: username,
+      valenz: valenz,
+      arousal: arousal
+    }).then(function (response){
+      alert("Eintrag wurde hinzugeügt")
     })
     .catch(function (error){
       console.log(error)
