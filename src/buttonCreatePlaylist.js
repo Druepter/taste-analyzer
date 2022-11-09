@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 export default function ButtonCreatePlaylist({createPlaylist, tracks, title, description}){
 
     const handleCreatePlaylistClick = () =>{
+        console.log("button wurde geklickt")
         createPlaylist(title, tracks, description)
       }
 

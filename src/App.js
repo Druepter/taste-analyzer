@@ -27,7 +27,9 @@ import highEnergyImageSmall from "./assets/energetisch_klein.jpg";
 import lowEnergyImageSmall from "./assets/ruhig_klein.jpg";
 import HighEnergy from "./HighEnergy";
 import LowEnergy from "./LowEnergy";
+import BigFive from "./BigFive"
 import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import StatementContainer from "./StatementContainer";
 
 
 function App() {
@@ -1110,7 +1112,9 @@ function App() {
         }
   
         <Routes>
-          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState} valenceState={valence}/>}></Route>   
+          <Route path="/home" element={<Home getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState} valenceState={valence}/>}></Route>
+          <Route path="/statement" element={<StatementContainer></StatementContainer>}></Route>
+          <Route path="/bigFive" element={<BigFive getFavoriteTracksAudioFeaturesShortTerm={getFavoriteTracksAudioFeaturesShortTerm} getFavoriteTracksAudioFeaturesMediumTerm={getFavoriteTracksAudioFeaturesMediumTerm} getFavoriteTracksAudioFeaturesLongTerm={getFavoriteTracksAudioFeaturesLongTerm} getCurrentUsersProfile={getCurrentUsersProfile} currentUsersProfile={currentUsersProfile} token={token} readyToRender={readyToRender} chartColors={chartColors} chartData={chartData} chartLabels={chartLabels} trackCategories={trackCategories} renderState={setRenderState} valenceState={valence}/>}></Route>   
           <Route path="/danceable" element={<Danceable danceableTracks={danceableTracks} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/lowValence" element={<LowValence tracksWithLowValence={tracksWithLowValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route> 
           <Route path="/highValence" element={<HighValence tracksWithHighValence={tracksWithHighValence} createPlaylist={createPlaylist} renderState={setRenderState}/>}></Route>
